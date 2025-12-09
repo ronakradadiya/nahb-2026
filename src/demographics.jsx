@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   BarChart,
   Bar,
@@ -16,6 +16,7 @@ import {
   ComposedChart,
   Area,
 } from "recharts";
+import html2canvas from "html2canvas";
 
 const colors = {
   primary: "#2D5A4A",
@@ -86,7 +87,211 @@ const crimeComparison = [
   { type: "Property", lilburn: 25.6, us: 19.0 },
 ];
 
+// Enhanced Download Button Component for individual charts
+const ChartDownloadButton = ({ chartRef, filename }) => {
+  const [downloading, setDownloading] = useState(false);
+  const buttonRef = useRef(null);
+
+  const handleDownload = async () => {
+    if (!chartRef.current) return;
+
+    setDownloading(true);
+
+    try {
+      // Hide the button before capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = "none";
+      }
+
+      const canvas = await html2canvas(chartRef.current, {
+        backgroundColor: "#fff",
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const link = document.createElement("a");
+      link.download = `${filename}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      // Show the button again after capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = "flex";
+      }
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      onClick={handleDownload}
+      disabled={downloading}
+      style={{
+        position: "absolute",
+        top: "10px",
+        right: "10px",
+        padding: "6px 12px",
+        backgroundColor: downloading ? colors.accent : colors.primary,
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: downloading ? "wait" : "pointer",
+        fontSize: "0.7rem",
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        transition: "all 0.2s ease",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+        zIndex: 10,
+        opacity: 0.9,
+      }}
+      onMouseEnter={(e) => (e.target.style.opacity = "1")}
+      onMouseLeave={(e) => (e.target.style.opacity = "0.9")}
+    >
+      {downloading ? "⏳" : "📥"}
+    </button>
+  );
+};
+
+// Download Button Component for sections
+const DownloadButton = ({ sectionRef, filename }) => {
+  const [downloading, setDownloading] = useState(false);
+  const buttonRef = useRef(null);
+
+  const handleDownload = async () => {
+    if (!sectionRef.current) return;
+
+    setDownloading(true);
+
+    try {
+      // Hide the button before capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = "none";
+      }
+
+      const canvas = await html2canvas(sectionRef.current, {
+        backgroundColor: colors.light,
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const link = document.createElement("a");
+      link.download = `${filename}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      // Show the button again after capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = "flex";
+      }
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      onClick={handleDownload}
+      disabled={downloading}
+      style={{
+        position: "absolute",
+        top: "0px",
+        right: "15px",
+        padding: "8px 16px",
+        backgroundColor: downloading ? colors.accent : colors.primary,
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        cursor: downloading ? "wait" : "pointer",
+        fontSize: "0.8rem",
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        transition: "all 0.2s ease",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+        zIndex: 10,
+      }}
+    >
+      {downloading ? "⏳ Saving..." : "📥 Download PNG"}
+    </button>
+  );
+};
+
+// Section Wrapper Component
+const Section = ({ id, title, sectionNumber, children, sectionRef }) => {
+  return (
+    <section
+      ref={sectionRef}
+      style={{
+        marginBottom: "50px",
+        position: "relative",
+        backgroundColor: colors.light,
+        // padding: "20px",
+        borderRadius: "12px",
+      }}
+    >
+      <DownloadButton
+        sectionRef={sectionRef}
+        filename={`section-${sectionNumber}-${id}`}
+      />
+      <h2
+        style={{
+          fontSize: "1.4rem",
+          color: colors.dark,
+          marginBottom: "20px",
+          borderLeft: `4px solid ${colors.secondary}`,
+          paddingLeft: "15px",
+          paddingRight: "120px",
+        }}
+      >
+        {sectionNumber}. {title}
+      </h2>
+      {children}
+    </section>
+  );
+};
+
+// Wrapper component for individual chart boxes
+const ChartBox = ({ children, filename, style = {} }) => {
+  const chartRef = useRef(null);
+
+  return (
+    <div
+      ref={chartRef}
+      style={{
+        backgroundColor: "#fff",
+        borderRadius: "10px",
+        padding: "20px",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+        position: "relative",
+        ...style,
+      }}
+    >
+      <ChartDownloadButton chartRef={chartRef} filename={filename} />
+      {children}
+    </div>
+  );
+};
+
 export default function Demographics() {
+  const headerRef = useRef(null);
+  const section1Ref = useRef(null);
+  const section2Ref = useRef(null);
+  const section3Ref = useRef(null);
+  const section4Ref = useRef(null);
+  const section5Ref = useRef(null);
+  const section6Ref = useRef(null);
+  const summaryRef = useRef(null);
+
   return (
     <div
       style={{
@@ -98,13 +303,16 @@ export default function Demographics() {
     >
       {/* Header */}
       <header
+        ref={headerRef}
         style={{
           textAlign: "center",
           marginBottom: "40px",
           borderBottom: `3px solid ${colors.primary}`,
           paddingBottom: "25px",
+          position: "relative",
         }}
       >
+        <DownloadButton sectionRef={headerRef} filename="header-demographics" />
         <h1
           style={{
             fontSize: "2.5rem",
@@ -183,18 +391,12 @@ export default function Demographics() {
       </header>
 
       {/* Section 1: Population */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          1. Population Overview
-        </h2>
+      <Section
+        id="population"
+        title="Population Overview"
+        sectionNumber={1}
+        sectionRef={section1Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -244,14 +446,7 @@ export default function Demographics() {
             </div>
           ))}
         </div>
-        <div
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: "10px",
-            padding: "20px",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-          }}
-        >
+        <ChartBox filename="population-growth-chart">
           <h3 style={{ color: colors.primary, marginBottom: "15px" }}>
             Population Growth (1980-2025)
           </h3>
@@ -284,22 +479,16 @@ export default function Demographics() {
               />
             </ComposedChart>
           </ResponsiveContainer>
-        </div>
-      </section>
+        </ChartBox>
+      </Section>
 
       {/* Section 2: Age Distribution */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          2. Age Distribution
-        </h2>
+      <Section
+        id="age-distribution"
+        title="Age Distribution"
+        sectionNumber={2}
+        sectionRef={section2Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -307,14 +496,7 @@ export default function Demographics() {
             gap: "20px",
           }}
         >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          <ChartBox filename="age-distribution-chart">
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={ageData}>
                 <CartesianGrid
@@ -338,15 +520,8 @@ export default function Demographics() {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="age-breakdown-table">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Age Breakdown
             </h4>
@@ -369,23 +544,17 @@ export default function Demographics() {
                 </span>
               </div>
             ))}
-          </div>
+          </ChartBox>
         </div>
-      </section>
+      </Section>
 
       {/* Section 3: Race & Ethnicity */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          3. Race & Ethnicity
-        </h2>
+      <Section
+        id="race-ethnicity"
+        title="Race & Ethnicity"
+        sectionNumber={3}
+        sectionRef={section3Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -393,14 +562,7 @@ export default function Demographics() {
             gap: "20px",
           }}
         >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          <ChartBox filename="race-pie-chart">
             <ResponsiveContainer width="100%" height={240}>
               <PieChart>
                 <Pie
@@ -420,15 +582,8 @@ export default function Demographics() {
                 <Tooltip formatter={(v) => `${v}%`} />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="diversity-breakdown">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Diversity Breakdown
             </h4>
@@ -486,23 +641,17 @@ export default function Demographics() {
             >
               <strong>Key:</strong> No majority race. ~50% Hispanic/Latino.
             </div>
-          </div>
+          </ChartBox>
         </div>
-      </section>
+      </Section>
 
       {/* Section 4: Employment & Income */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          4. Employment & Income
-        </h2>
+      <Section
+        id="employment-income"
+        title="Employment & Income"
+        sectionNumber={4}
+        sectionRef={section4Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -560,14 +709,7 @@ export default function Demographics() {
             gap: "20px",
           }}
         >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          <ChartBox filename="employment-by-sector">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Employment by Sector
             </h4>
@@ -590,15 +732,8 @@ export default function Demographics() {
                 <Legend formatter={(value, entry) => entry.payload.sector} />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="income-by-age">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Income by Age Group
             </h4>
@@ -622,23 +757,17 @@ export default function Demographics() {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </div>
+          </ChartBox>
         </div>
-      </section>
+      </Section>
 
       {/* Section 5: Household & Housing */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          5. Household & Housing
-        </h2>
+      <Section
+        id="household-housing"
+        title="Household & Housing"
+        sectionNumber={5}
+        sectionRef={section5Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -696,14 +825,7 @@ export default function Demographics() {
             gap: "20px",
           }}
         >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          <ChartBox filename="household-type-pie">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Household Type
             </h4>
@@ -756,15 +878,8 @@ export default function Demographics() {
                 </div>
               ))}
             </div>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="housing-types">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Housing Types
             </h4>
@@ -801,15 +916,8 @@ export default function Demographics() {
                 </div>
               </div>
             ))}
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="build-year">
             <h4 style={{ color: colors.primary, marginBottom: "12px" }}>
               Build Year
             </h4>
@@ -838,23 +946,17 @@ export default function Demographics() {
             >
               <strong>81.5%</strong> of homes built 1970-1999
             </div>
-          </div>
+          </ChartBox>
         </div>
-      </section>
+      </Section>
 
       {/* Section 6: Crime */}
-      <section style={{ marginBottom: "40px" }}>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "15px",
-          }}
-        >
-          6. Crime Statistics
-        </h2>
+      <Section
+        id="crime"
+        title="Crime Statistics"
+        sectionNumber={6}
+        sectionRef={section6Ref}
+      >
         <div
           style={{
             display: "grid",
@@ -862,15 +964,7 @@ export default function Demographics() {
             gap: "20px",
           }}
         >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "25px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-              textAlign: "center",
-            }}
-          >
+          <ChartBox filename="safety-index" style={{ textAlign: "center" }}>
             <h4 style={{ color: colors.primary, marginBottom: "15px" }}>
               Safety Index
             </h4>
@@ -914,15 +1008,8 @@ export default function Demographics() {
             >
               <strong>1 in 634</strong> violent crime chance
             </div>
-          </div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "25px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
+          </ChartBox>
+          <ChartBox filename="crime-comparison">
             <h4 style={{ color: colors.primary, marginBottom: "15px" }}>
               Crime Rate (per 1,000 residents)
             </h4>
@@ -1001,26 +1088,33 @@ export default function Demographics() {
                 </div>
               ))}
             </div>
-          </div>
+          </ChartBox>
         </div>
-      </section>
+      </Section>
 
       {/* Summary */}
       <section
+        ref={summaryRef}
         style={{
           backgroundColor: colors.primary,
           borderRadius: "10px",
           padding: "30px",
           color: "#fff",
           marginBottom: "25px",
+          position: "relative",
         }}
       >
+        <DownloadButton
+          sectionRef={summaryRef}
+          filename="demographics-summary"
+        />
         <h2
           style={{
             fontSize: "1.4rem",
             marginBottom: "20px",
             borderBottom: `2px solid ${colors.accent}`,
             paddingBottom: "12px",
+            paddingRight: "120px",
           }}
         >
           Demographics Summary
@@ -1066,23 +1160,6 @@ export default function Demographics() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer
-        style={{
-          textAlign: "center",
-          paddingTop: "20px",
-          borderTop: `2px solid ${colors.accent}`,
-          color: colors.secondary,
-        }}
-      >
-        <p style={{ margin: 0, fontSize: "0.85rem" }}>
-          NAHB Student Competition | Lilburn Demographics | Gwinnett County, GA
-        </p>
-        <p style={{ margin: "5px 0 0", fontSize: "0.75rem", color: "#999" }}>
-          Data: U.S. Census Bureau, Neilsberg, Census Reporter
-        </p>
-      </footer>
     </div>
   );
 }
