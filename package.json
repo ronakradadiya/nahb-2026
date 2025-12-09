@@ -11,6 +11,7 @@
     "build": "pnpm parcel build index.html"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "recharts": "^3.5.1"
