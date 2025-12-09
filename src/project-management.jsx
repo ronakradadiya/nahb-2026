@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
 
 // Color palette - professional construction/engineering theme
 const colors = {
@@ -77,8 +78,80 @@ const softwareFeatures = [
   { feature: 'Permit Box Integration', icon: '📦' },
 ];
 
+// Download Button Component
+const ChartDownloadButton = ({ chartRef, filename }) => {
+  const [downloading, setDownloading] = useState(false);
+  const buttonRef = useRef(null);
+
+  const handleDownload = async () => {
+    if (!chartRef.current) return;
+
+    setDownloading(true);
+
+    try {
+      // Hide the button before capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = 'none';
+      }
+
+      const canvas = await html2canvas(chartRef.current, {
+        backgroundColor: "#fff",
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const link = document.createElement("a");
+      link.download = `${filename}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      // Show the button again after capturing
+      if (buttonRef.current) {
+        buttonRef.current.style.display = 'flex';
+      }
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      onClick={handleDownload}
+      disabled={downloading}
+      style={{
+        position: "absolute",
+        top: "10px",
+        right: "10px",
+        padding: "8px 16px",
+        backgroundColor: downloading ? colors.warning : colors.secondary,
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        cursor: downloading ? "wait" : "pointer",
+        fontSize: "0.8rem",
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        transition: "all 0.2s ease",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+        zIndex: 10,
+        opacity: 0.9,
+      }}
+      onMouseEnter={(e) => (e.target.style.opacity = "1")}
+      onMouseLeave={(e) => (e.target.style.opacity = "0.9")}
+    >
+      {downloading ? "⏳ Saving..." : "📥 Download PNG"}
+    </button>
+  );
+};
+
 export default function ProjectManagement() {
   const [activeSection, setActiveSection] = useState('overview');
+  const orgChartRef = useRef(null);
 
   const NavButton = ({ id, label, icon }) => (
     <button
@@ -245,8 +318,20 @@ export default function ProjectManagement() {
               👥 Organizational Structure
             </h2>
             
-            {/* Org Chart Visual */}
-            <div style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', marginBottom: '25px' }}>
+            {/* Org Chart Visual with Download Button */}
+            <div 
+              ref={orgChartRef}
+              style={{ 
+                backgroundColor: '#fff', 
+                borderRadius: '12px', 
+                padding: '30px', 
+                boxShadow: '0 4px 15px rgba(0,0,0,0.08)', 
+                marginBottom: '25px',
+                position: 'relative'
+              }}
+            >
+              <ChartDownloadButton chartRef={orgChartRef} filename="organizational-structure" />
+              
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {/* Level 1 - Senior Construction Manager */}
                 <div style={{
