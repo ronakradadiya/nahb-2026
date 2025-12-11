@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MarketingAnalysis from "./marketing-analysis";
 import Demographics from "./demographics";
 import ProjectManagement from "./project-management";
+import Sustainability from "./sustainability";
 
 // Color palette - earthy sage tones
 const colors = {
@@ -12,8 +13,21 @@ const colors = {
   ebony: "#414833",
 };
 
+const getTabFromURL = () => {
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get("tab");
+  const validTabs = ["sales", "demographics", "project", "sustainability"];
+  return validTabs.includes(tab) ? tab : "sales";
+};
+
 export default function NAHBDashboard() {
-  const [activeTab, setActiveTab] = useState("sales");
+  const [activeTab, setActiveTab] = useState(getTabFromURL);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", activeTab);
+    window.history.replaceState({}, "", `?${params.toString()}`);
+  }, [activeTab]);
 
   return (
     <div
@@ -59,11 +73,19 @@ export default function NAHBDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <nav style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
+        <nav
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "15px",
+            flexWrap: "wrap",
+          }}
+        >
           {[
-            { id: "sales", label: "Sales & Marketing Analysis", icon: "📊" },
+            { id: "sales", label: "Sales & Marketing", icon: "📊" },
             { id: "demographics", label: "Demographics", icon: "👥" },
             { id: "project", label: "Project Management", icon: "🏗️" },
+            { id: "sustainability", label: "Sustainability", icon: "🌿" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -150,6 +172,25 @@ export default function NAHBDashboard() {
             </h2>
 
             <ProjectManagement />
+          </div>
+        )}
+
+        {/* Sustainability Tab */}
+        {activeTab === "sustainability" && (
+          <div>
+            <h2
+              style={{
+                color: colors.ebony,
+                marginBottom: "20px",
+                fontSize: "1.8rem",
+                borderBottom: `3px solid ${colors.sage}`,
+                paddingBottom: "10px",
+              }}
+            >
+              Sustainability
+            </h2>
+
+            <Sustainability />
           </div>
         )}
       </main>
