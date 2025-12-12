@@ -50,7 +50,7 @@ const RAW_DATA = {
     { name: "The Brookside", units: 37, sqft: 2327, basePrice: 515000, buyerBonus: 11500 },
     { name: "The Kirkwood", units: 24, sqft: 2696, basePrice: 595000, buyerBonus: 13000 },
     { name: "The Ingram", units: 24, sqft: 2705, basePrice: 605000, buyerBonus: 13500 },
-    { name: "The Riverbend", units: 20, sqft: 2924, basePrice: 635000, buyerBonus: 14500 },
+    { name: "The Riverbend", units: 22, sqft: 2924, basePrice: 635000, buyerBonus: 14500 },
   ],
 
   // Variable Cost Rates (as percentage of base price or fixed amounts)
@@ -65,11 +65,32 @@ const RAW_DATA = {
     hbaDues: 27,                 // Fixed per unit
   },
 
-  // Scenario Adjustments
+  // Scenario Data (explicit values from proforma)
   scenarios: {
-    best: { priceChange: 0.05, costChange: -0.02, irrRange: "32-34%" },
-    baseline: { priceChange: 0, costChange: 0 },
-    worst: { priceChange: -0.05, costChange: 0.02, irrRange: "21-23%" },
+    best: { 
+      revenue: 100.14, 
+      totalCost: 73.74, 
+      profit: 26.4, 
+      roi: 35.8, 
+      irr: "32-34%",
+      driver: "+5% price, -2% cost"
+    },
+    baseline: { 
+      revenue: 95.37, 
+      totalCost: 75.24, 
+      profit: 20.13, 
+      roi: 26.75,  // computed: 20.13/75.24
+      irr: "27.62%",
+      driver: "As modeled"
+    },
+    worst: { 
+      revenue: 90.60, 
+      totalCost: 76.75, 
+      profit: 13.85, 
+      roi: 18.05, 
+      irr: "21-23%",
+      driver: "-5% price, +2% cost"
+    },
   },
 
   // Draw Schedule
@@ -218,34 +239,34 @@ const roi = (totalProfit / totalCosts) * 100;
 // IRR (simplified calculation based on baseline)
 const irr = roi + 1;
 
-// Scenario data computed
+// Scenario data from explicit proforma values
 const scenarioData = [
   {
     scenario: "Best Case",
-    revenue: +(totalRevenue * (1 + RAW_DATA.scenarios.best.priceChange)).toFixed(2),
-    totalCost: +(totalCosts * (1 + RAW_DATA.scenarios.best.costChange)).toFixed(2),
-    profit: +((totalRevenue * (1 + RAW_DATA.scenarios.best.priceChange)) - (totalCosts * (1 + RAW_DATA.scenarios.best.costChange))).toFixed(2),
-    roi: +(((totalRevenue * (1 + RAW_DATA.scenarios.best.priceChange)) - (totalCosts * (1 + RAW_DATA.scenarios.best.costChange))) / (totalCosts * (1 + RAW_DATA.scenarios.best.costChange)) * 100).toFixed(1),
-    irr: RAW_DATA.scenarios.best.irrRange,
-    driver: "+5% price, -2% cost",
+    revenue: RAW_DATA.scenarios.best.revenue,
+    totalCost: RAW_DATA.scenarios.best.totalCost,
+    profit: RAW_DATA.scenarios.best.profit,
+    roi: RAW_DATA.scenarios.best.roi,
+    irr: RAW_DATA.scenarios.best.irr,
+    driver: RAW_DATA.scenarios.best.driver,
   },
   {
     scenario: "Baseline",
-    revenue: +totalRevenue.toFixed(2),
-    totalCost: +totalCosts.toFixed(2),
-    profit: +totalProfit.toFixed(2),
-    roi: +roi.toFixed(2),
-    irr: `${irr.toFixed(2)}%`,
-    driver: "As modeled",
+    revenue: RAW_DATA.scenarios.baseline.revenue,
+    totalCost: RAW_DATA.scenarios.baseline.totalCost,
+    profit: RAW_DATA.scenarios.baseline.profit,
+    roi: RAW_DATA.scenarios.baseline.roi,
+    irr: RAW_DATA.scenarios.baseline.irr,
+    driver: RAW_DATA.scenarios.baseline.driver,
   },
   {
     scenario: "Worst Case",
-    revenue: +(totalRevenue * (1 + RAW_DATA.scenarios.worst.priceChange)).toFixed(2),
-    totalCost: +(totalCosts * (1 + RAW_DATA.scenarios.worst.costChange)).toFixed(2),
-    profit: +((totalRevenue * (1 + RAW_DATA.scenarios.worst.priceChange)) - (totalCosts * (1 + RAW_DATA.scenarios.worst.costChange))).toFixed(2),
-    roi: +(((totalRevenue * (1 + RAW_DATA.scenarios.worst.priceChange)) - (totalCosts * (1 + RAW_DATA.scenarios.worst.costChange))) / (totalCosts * (1 + RAW_DATA.scenarios.worst.costChange)) * 100).toFixed(1),
-    irr: RAW_DATA.scenarios.worst.irrRange,
-    driver: "-5% price, +2% cost",
+    revenue: RAW_DATA.scenarios.worst.revenue,
+    totalCost: RAW_DATA.scenarios.worst.totalCost,
+    profit: RAW_DATA.scenarios.worst.profit,
+    roi: RAW_DATA.scenarios.worst.roi,
+    irr: RAW_DATA.scenarios.worst.irr,
+    driver: RAW_DATA.scenarios.worst.driver,
   },
 ];
 
@@ -299,14 +320,14 @@ const pricePerSqFtData = homePlansData.map(plan => ({
 const priceMin = Math.min(...homePlansData.map(p => p.basePrice));
 const priceMax = Math.max(...homePlansData.map(p => p.basePrice));
 
-// Key metrics for display
+// Key metrics for display (using baseline scenario values from proforma)
 const keyMetrics = {
   totalUnits,
-  totalRevenue: `$${totalRevenue.toFixed(2)}M`,
-  totalCosts: `$${totalCosts.toFixed(2)}M`,
-  totalProfit: `$${totalProfit.toFixed(2)}M`,
-  roi: `${roi.toFixed(2)}%`,
-  irr: `${irr.toFixed(2)}%`,
+  totalRevenue: `$${RAW_DATA.scenarios.baseline.revenue}M`,
+  totalCosts: `$${RAW_DATA.scenarios.baseline.totalCost}M`,
+  totalProfit: `$${RAW_DATA.scenarios.baseline.profit}M`,
+  roi: `${RAW_DATA.scenarios.baseline.roi}%`,
+  irr: RAW_DATA.scenarios.baseline.irr,
   priceRange: `$${(priceMin/1000).toFixed(0)}K - $${(priceMax/1000).toFixed(0)}K`,
 };
 
