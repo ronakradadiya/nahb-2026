@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import MarketingAnalysis from "./marketing-analysis";
 import Demographics from "./demographics";
 import ProjectManagement from "./project-management";
 import Sustainability from "./sustainability";
+import Financials from "./financials";
 
 // Color palette - earthy sage tones
 const colors = {
@@ -13,14 +14,14 @@ const colors = {
   ebony: "#414833",
 };
 
-const getTabFromURL = () => {
-  const params = new URLSearchParams(window.location.search);
-  const tab = params.get("tab");
-  const validTabs = ["sales", "demographics", "project", "sustainability"];
-  return validTabs.includes(tab) ? tab : "sales";
-};
-
 export default function NAHBDashboard() {
+  const getTabFromURL = () => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    const validTabs = ["sales", "demographics", "project", "sustainability", "financials"];
+    return validTabs.includes(tab) ? tab : "sales";
+  };
+
   const [activeTab, setActiveTab] = useState(getTabFromURL);
 
   useEffect(() => {
@@ -73,19 +74,13 @@ export default function NAHBDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <nav
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "15px",
-            flexWrap: "wrap",
-          }}
-        >
+        <nav style={{ display: "flex", justifyContent: "center", gap: "15px", flexWrap: "wrap" }}>
           {[
             { id: "sales", label: "Sales & Marketing", icon: "📊" },
             { id: "demographics", label: "Demographics", icon: "👥" },
             { id: "project", label: "Project Management", icon: "🏗️" },
             { id: "sustainability", label: "Sustainability", icon: "🌿" },
+            { id: "financials", label: "Financials", icon: "💰" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -191,6 +186,25 @@ export default function NAHBDashboard() {
             </h2>
 
             <Sustainability />
+          </div>
+        )}
+
+        {/* Financials Tab */}
+        {activeTab === "financials" && (
+          <div>
+            <h2
+              style={{
+                color: colors.ebony,
+                marginBottom: "20px",
+                fontSize: "1.8rem",
+                borderBottom: `3px solid ${colors.sage}`,
+                paddingBottom: "10px",
+              }}
+            >
+              Financials
+            </h2>
+
+            <Financials />
           </div>
         )}
       </main>
