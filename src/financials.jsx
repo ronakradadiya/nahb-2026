@@ -65,41 +65,57 @@ const RAW_DATA = {
     hbaDues: 27,                 // Fixed per unit
   },
 
-  // Scenario Data (explicit values from proforma)
+  // Scenario Data (from Financial Analysis document)
   scenarios: {
     best: { 
-      revenue: 100.14, 
-      totalCost: 73.74, 
-      profit: 26.4, 
-      roi: 35.8, 
+      revenue: 107.73, 
+      totalCost: 78.88, 
+      profit: 28.85, 
+      roi: 36.60, 
       irr: "32-34%",
-      driver: "+5% price, -2% cost"
+      driver: "+5% price, −2% cost"
     },
     baseline: { 
-      revenue: 95.37, 
-      totalCost: 75.24, 
-      profit: 20.13, 
-      roi: 26.75,  // computed: 20.13/75.24
-      irr: "27.62%",
+      revenue: 102.60, 
+      totalCost: 80.49, 
+      profit: 22.11, 
+      roi: 27.47,
+      irr: "28.40%",
       driver: "As modeled"
     },
     worst: { 
-      revenue: 90.60, 
-      totalCost: 76.75, 
-      profit: 13.85, 
-      roi: 18.05, 
+      revenue: 97.47, 
+      totalCost: 82.10, 
+      profit: 15.37, 
+      roi: 18.70, 
       irr: "21-23%",
-      driver: "-5% price, +2% cost"
+      driver: "−5% price, +2% cost"
     },
   },
 
-  // Draw Schedule
+  // Draw Schedule (from Financial Analysis document)
   drawSchedule: [
-    { draw: "Draw 1", amountMin: 11.0, amountMax: 12.0, timing: "Month 0", purpose: "Land purchase + early work" },
-    { draw: "Draw 2", amountMin: 3.0, amountMax: 4.0, timing: "Month 6", purpose: "Heavy site development" },
-    { draw: "Draw 3", amountMin: 2.5, amountMax: 3.5, timing: "Month 12", purpose: "Vertical construction begins" },
-    { draw: "Draw 4", amountMin: 3.0, amountMax: 4.0, timing: "Month 18", purpose: "Peak construction + interest" },
+    { draw: "Draw 1", amountMin: 11.0, amountMax: 11.5, timing: "Months 1-2", purpose: "Land acquisition, soft costs, early carry" },
+    { draw: "Draw 2", amountMin: 4.0, amountMax: 4.5, timing: "Months 5-6", purpose: "Peak site development, utilities" },
+    { draw: "Draw 3", amountMin: 3.5, amountMax: 4.0, timing: "Months 11-12", purpose: "Vertical construction ramp (Phase 1)" },
+    { draw: "Draw 4", amountMin: 2.5, amountMax: 3.0, timing: "Months 17-18", purpose: "Peak vertical + interest carry" },
   ],
+
+  // Lot Sell-Off Strategy (Risk Mitigation)
+  lotSellOff: {
+    availableLots: 37,
+    percentageOfTotal: 20.56,
+    profitMargin: 17,
+    totalCost: 2.83,  // in millions
+    salesPrice: 3.31, // in millions
+  },
+
+  // Absorption Rate Info
+  absorptionRate: {
+    early: "Limited or no closings",
+    mid: "3-5 closings/month",
+    later: "6-7 closings/month",
+  },
 
   // Cost Breakdown (in thousands)
   costBreakdown: [
@@ -545,6 +561,7 @@ export default function Financials() {
   const section5Ref = useRef(null);
   const section6Ref = useRef(null);
   const section7Ref = useRef(null);
+  const section8Ref = useRef(null);
   const summaryRef = useRef(null);
 
   return (
