@@ -238,6 +238,53 @@ const financialIncentivesData = [
 ];
 
 // ============================================
+// SILVERWOOD HEIGHTS PROPOSED DATA
+// ============================================
+
+// Our Proposed Sales Prices (Silverwood Heights)
+const proposedPlansData = [
+  { name: "The Havenwood", config: "Single-Story", lotSize: 7500, sqft: 2156, basePrice: 470000, pricePerSqft: 218, netWithOptions: 512496 },
+  { name: "The Sterling", config: "1.5 Story w/ Loft", lotSize: 7500, sqft: 2212, basePrice: 484000, pricePerSqft: 219, netWithOptions: 527642 },
+  { name: "The Brookside", config: "Single Story", lotSize: 7500, sqft: 2327, basePrice: 499900, pricePerSqft: 215, netWithOptions: 543847 },
+  { name: "The Kirkwood", config: "Two Story", lotSize: 9000, sqft: 2696, basePrice: 559990, pricePerSqft: 208, netWithOptions: 621606 },
+  { name: "The Ingram", config: "Two-Story (5-Bed)", lotSize: 9000, sqft: 2705, basePrice: 564990, pricePerSqft: 209, netWithOptions: 627288 },
+  { name: "The Riverbend", config: "Two-Story (4 bed)", lotSize: 9000, sqft: 2924, basePrice: 599990, pricePerSqft: 205, netWithOptions: 665151 },
+];
+
+// Calculate averages for comparison
+const proposedAvgPrice = Math.round(proposedPlansData.reduce((sum, p) => sum + p.basePrice, 0) / proposedPlansData.length);
+const proposedAvgSqft = Math.round(proposedPlansData.reduce((sum, p) => sum + p.sqft, 0) / proposedPlansData.length);
+const proposedAvgPPSF = Math.round(proposedPlansData.reduce((sum, p) => sum + p.pricePerSqft, 0) / proposedPlansData.length);
+
+// Competitor averages (from comparableSalesData)
+const competitorAvgPrice = Math.round([535000, 497180, 536000, 511500, 540300].reduce((a, b) => a + b, 0) / 5);
+const competitorAvgSqft = Math.round([3078, 2543, 2543, 2504, 2883].reduce((a, b) => a + b, 0) / 5);
+const competitorAvgPPSF = Math.round([174, 195, 211, 204, 187].reduce((a, b) => a + b, 0) / 5);
+
+// Comparison data for pie/bar charts
+const priceComparisonData = [
+  { name: "Silverwood Heights", value: proposedAvgPrice, color: colors.primary },
+  { name: "Market Competitors", value: competitorAvgPrice, color: colors.secondary },
+];
+
+const ppsfComparisonData = [
+  { name: "Silverwood Heights", value: proposedAvgPPSF, color: colors.primary },
+  { name: "Market Competitors", value: competitorAvgPPSF, color: colors.secondary },
+];
+
+const sqftComparisonData = [
+  { name: "Silverwood Heights", value: proposedAvgSqft, color: colors.primary },
+  { name: "Market Competitors", value: competitorAvgSqft, color: colors.secondary },
+];
+
+// Detailed comparison for bar chart
+const detailedComparisonData = [
+  { metric: "Avg Price", ours: proposedAvgPrice, competitors: competitorAvgPrice },
+  { metric: "Avg Sq Ft", ours: proposedAvgSqft, competitors: competitorAvgSqft },
+  { metric: "Avg $/Sq Ft", ours: proposedAvgPPSF, competitors: competitorAvgPPSF },
+];
+
+// ============================================
 // SUBSECTION 1 DATA - Lilburn/Oleander
 // ============================================
 
@@ -655,6 +702,7 @@ const MarketingAnalysis = () => {
   const section11Ref = useRef(null);
   const section12Ref = useRef(null);
   const section13Ref = useRef(null);
+  const section14Ref = useRef(null);
   const summaryRef = useRef(null);
 
   return (
@@ -2349,6 +2397,183 @@ const MarketingAnalysis = () => {
               <strong>Insight:</strong> New construction prices ($475K-$550K)
               significantly exceed median property values, pushing some buyers
               to rental market.
+            </div>
+          </ChartBox>
+        </div>
+      </Section>
+
+      {/* SECTION 14: COMPETITIVE POSITIONING - OUR PLANS VS MARKET */}
+      <Section
+        id="competitive-positioning"
+        title="Competitive Positioning: Silverwood Heights vs. Market"
+        sectionNumber={14}
+        sectionRef={section14Ref}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+          {/* Price Comparison Pie */}
+          <ChartBox title="Average Price Comparison" filename="price-comparison-pie">
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie
+                  data={priceComparisonData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  paddingAngle={3}
+                  dataKey="value"
+                  label={({ name, value }) => `$${(value/1000).toFixed(0)}K`}
+                >
+                  {priceComparisonData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(v) => `$${v.toLocaleString()}`} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+              {priceComparisonData.map((item, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </ChartBox>
+
+          {/* $/Sq Ft Comparison Pie */}
+          <ChartBox title="Price per Sq Ft Comparison" filename="ppsf-comparison-pie">
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie
+                  data={ppsfComparisonData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  paddingAngle={3}
+                  dataKey="value"
+                  label={({ name, value }) => `$${value}/sf`}
+                >
+                  {ppsfComparisonData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(v) => `$${v}/sq ft`} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+              {ppsfComparisonData.map((item, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </ChartBox>
+
+          {/* Sq Ft Comparison Pie */}
+          <ChartBox title="Average Sq Ft Comparison" filename="sqft-comparison-pie">
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie
+                  data={sqftComparisonData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  paddingAngle={3}
+                  dataKey="value"
+                  label={({ name, value }) => `${value} sf`}
+                >
+                  {sqftComparisonData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(v) => `${v.toLocaleString()} sq ft`} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+              {sqftComparisonData.map((item, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
+                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </ChartBox>
+        </div>
+
+        {/* Detailed Comparison */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "20px" }}>
+          <ChartBox title="Our Proposed Plans - Silverwood Heights" filename="proposed-plans-table">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
+              <thead>
+                <tr style={{ backgroundColor: colors.primary, color: "#fff" }}>
+                  <th style={{ padding: "10px", textAlign: "left" }}>Plan Name</th>
+                  <th style={{ padding: "10px", textAlign: "center" }}>Config</th>
+                  <th style={{ padding: "10px", textAlign: "right" }}>Sq Ft</th>
+                  <th style={{ padding: "10px", textAlign: "right" }}>Base Price</th>
+                  <th style={{ padding: "10px", textAlign: "right" }}>$/Sq Ft</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proposedPlansData.map((plan, idx) => (
+                  <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? "#fff" : colors.light }}>
+                    <td style={{ padding: "10px", fontWeight: 600, color: colors.primary }}>{plan.name}</td>
+                    <td style={{ padding: "10px", textAlign: "center", fontSize: "0.75rem" }}>{plan.config}</td>
+                    <td style={{ padding: "10px", textAlign: "right" }}>{plan.sqft.toLocaleString()}</td>
+                    <td style={{ padding: "10px", textAlign: "right" }}>${plan.basePrice.toLocaleString()}</td>
+                    <td style={{ padding: "10px", textAlign: "right", fontWeight: 600, color: colors.success }}>${plan.pricePerSqft}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr style={{ backgroundColor: colors.primary, color: "#fff" }}>
+                  <td style={{ padding: "10px", fontWeight: 600 }} colSpan={2}>AVERAGE</td>
+                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>{proposedAvgSqft.toLocaleString()}</td>
+                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>${proposedAvgPrice.toLocaleString()}</td>
+                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>${proposedAvgPPSF}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </ChartBox>
+
+          <ChartBox title="Key Competitive Insights" filename="competitive-insights">
+            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.primary}` }}>
+                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Price Premium</div>
+                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.primary }}>
+                  +${(proposedAvgPrice - competitorAvgPrice).toLocaleString()}
+                </div>
+                <div style={{ fontSize: "0.75rem", color: colors.dark }}>
+                  ({((proposedAvgPrice - competitorAvgPrice) / competitorAvgPrice * 100).toFixed(1)}% above market avg)
+                </div>
+              </div>
+              
+              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.success}` }}>
+                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>$/Sq Ft Premium</div>
+                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.success }}>
+                  +${proposedAvgPPSF - competitorAvgPPSF}/sf
+                </div>
+                <div style={{ fontSize: "0.75rem", color: colors.dark }}>
+                  New construction commands {((proposedAvgPPSF - competitorAvgPPSF) / competitorAvgPPSF * 100).toFixed(1)}% premium
+                </div>
+              </div>
+
+              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.secondary}` }}>
+                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Size Difference</div>
+                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.secondary }}>
+                  {proposedAvgSqft - competitorAvgSqft > 0 ? "+" : ""}{proposedAvgSqft - competitorAvgSqft} sf
+                </div>
+                <div style={{ fontSize: "0.75rem", color: colors.dark }}>
+                  {proposedAvgSqft < competitorAvgSqft ? "More efficient layouts vs competitors" : "Larger homes on average"}
+                </div>
+              </div>
+
+              <div style={{ padding: "12px", backgroundColor: "#E8F5E9", borderRadius: "8px", fontSize: "0.8rem" }}>
+                <strong>Value Proposition:</strong> New construction with modern features, energy efficiency, and warranties justifies the premium over resale competitors.
+              </div>
             </div>
           </ChartBox>
         </div>
