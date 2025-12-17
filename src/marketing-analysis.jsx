@@ -277,13 +277,6 @@ const sqftComparisonData = [
   { name: "Market Competitors", value: competitorAvgSqft, color: colors.secondary },
 ];
 
-// Detailed comparison for bar chart
-const detailedComparisonData = [
-  { metric: "Avg Price", ours: proposedAvgPrice, competitors: competitorAvgPrice },
-  { metric: "Avg Sq Ft", ours: proposedAvgSqft, competitors: competitorAvgSqft },
-  { metric: "Avg $/Sq Ft", ours: proposedAvgPPSF, competitors: competitorAvgPPSF },
-];
-
 // ============================================
 // SUBSECTION 1 DATA - Lilburn/Oleander
 // ============================================
@@ -2542,12 +2535,12 @@ const MarketingAnalysis = () => {
           <ChartBox title="Key Competitive Insights" filename="competitive-insights">
             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
               <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.primary}` }}>
-                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Price Premium</div>
+                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Price Difference</div>
                 <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.primary }}>
-                  +${(proposedAvgPrice - competitorAvgPrice).toLocaleString()}
+                  ${Math.abs(proposedAvgPrice - competitorAvgPrice).toLocaleString()}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: colors.dark }}>
-                  ({((proposedAvgPrice - competitorAvgPrice) / competitorAvgPrice * 100).toFixed(1)}% above market avg)
+                  {proposedAvgPrice < competitorAvgPrice ? "Below" : "Above"} market avg ({((Math.abs(proposedAvgPrice - competitorAvgPrice)) / competitorAvgPrice * 100).toFixed(1)}%)
                 </div>
               </div>
               
@@ -2562,12 +2555,12 @@ const MarketingAnalysis = () => {
               </div>
 
               <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.secondary}` }}>
-                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Size Difference</div>
+                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Size Comparison</div>
                 <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.secondary }}>
-                  {proposedAvgSqft - competitorAvgSqft > 0 ? "+" : ""}{proposedAvgSqft - competitorAvgSqft} sf
+                  {Math.abs(proposedAvgSqft - competitorAvgSqft)} sf {proposedAvgSqft < competitorAvgSqft ? "smaller" : "larger"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: colors.dark }}>
-                  {proposedAvgSqft < competitorAvgSqft ? "More efficient layouts vs competitors" : "Larger homes on average"}
+                  {proposedAvgSqft < competitorAvgSqft ? "More efficient layouts" : "Larger homes"} vs competitors
                 </div>
               </div>
 
