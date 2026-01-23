@@ -1828,6 +1828,12 @@ export default function Financials() {
                     : risk.mitigated >= 70
                       ? colors.warning
                       : colors.danger;
+                const effectivenessLabel =
+                  risk.mitigated >= 80
+                    ? "Strong"
+                    : risk.mitigated >= 70
+                      ? "Moderate"
+                      : "Low";
                 return (
                   <div
                     key={idx}
@@ -1871,7 +1877,7 @@ export default function Financials() {
                             borderRadius: "4px",
                           }}
                         >
-                          {risk.severity}
+                          {effectivenessLabel}
                         </span>
                       </div>
                       <span
