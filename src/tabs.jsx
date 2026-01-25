@@ -4,6 +4,7 @@ import Demographics from "./demographics";
 import ProjectManagement from "./project-management";
 import Sustainability from "./sustainability";
 import Financials from "./financials";
+import Estimates from "./estimates";
 
 // Color palette - earthy sage tones
 const colors = {
@@ -18,7 +19,7 @@ export default function NAHBDashboard() {
   const getTabFromURL = () => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
-    const validTabs = ["sales", "demographics", "project", "sustainability", "financials"];
+    const validTabs = ["sales", "demographics", "project", "sustainability", "financials", "estimates"];
     return validTabs.includes(tab) ? tab : "sales";
   };
 
@@ -81,6 +82,7 @@ export default function NAHBDashboard() {
             { id: "project", label: "Project Management", icon: "🏗️" },
             { id: "sustainability", label: "Sustainability", icon: "🌿" },
             { id: "financials", label: "Financials", icon: "💰" },
+            { id: "estimates", label: "Estimates", icon: "🧮" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -205,6 +207,25 @@ export default function NAHBDashboard() {
             </h2>
 
             <Financials />
+          </div>
+        )}
+
+        {/* Estimates Tab */}
+        {activeTab === "estimates" && (
+          <div>
+            <h2
+              style={{
+                color: colors.ebony,
+                marginBottom: "20px",
+                fontSize: "1.8rem",
+                borderBottom: `3px solid ${colors.sage}`,
+                paddingBottom: "10px",
+              }}
+            >
+              Construction Estimates
+            </h2>
+
+            <Estimates />
           </div>
         )}
       </main>
