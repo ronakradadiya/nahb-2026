@@ -91,20 +91,33 @@ export default function NAHBDashboard() {
               style={{
                 padding: "14px 28px",
                 backgroundColor:
-                  activeTab === tab.id ? colors.sage : "transparent",
+                  activeTab === tab.id ? colors.bone : "transparent",
                 color: activeTab === tab.id ? colors.ebony : colors.bone,
                 border: `2px solid ${
-                  activeTab === tab.id ? colors.sage : "rgba(255,255,255,0.3)"
+                  activeTab === tab.id ? colors.dun : "rgba(255,255,255,0.3)"
                 }`,
                 borderRadius: "8px",
                 cursor: "pointer",
                 fontFamily: "'Georgia', serif",
                 fontSize: "1rem",
-                fontWeight: 600,
+                fontWeight: activeTab === tab.id ? 700 : 600,
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
                 transition: "all 0.3s ease",
+                boxShadow: activeTab === tab.id ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== tab.id) {
+                  e.target.style.borderColor = colors.dun;
+                  e.target.style.transform = "translateY(-2px)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== tab.id) {
+                  e.target.style.borderColor = "rgba(255,255,255,0.3)";
+                  e.target.style.transform = "translateY(0)";
+                }
               }}
             >
               <span style={{ fontSize: "1.2rem" }}>{tab.icon}</span>
