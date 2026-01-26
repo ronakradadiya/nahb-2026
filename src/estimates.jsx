@@ -485,16 +485,16 @@ export default function Estimates() {
               key={idx}
               style={{
                 backgroundColor: "#fff",
-                borderRadius: "10px",
-                padding: "18px",
+                borderRadius: "12px",
+                padding: "22px",
+                boxShadow: "0 4px 20px rgba(45, 90, 74, 0.1)",
+                border: `1px solid ${colors.accent}`,
                 textAlign: "center",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-                borderTop: `4px solid ${item.color}`,
               }}
             >
-              <div style={{ fontSize: "1.5rem", marginBottom: "6px" }}>{item.icon}</div>
-              <div style={{ fontSize: "1.3rem", fontWeight: 700, color: item.color }}>{item.value}</div>
-              <div style={{ fontSize: "0.7rem", color: colors.secondary, textTransform: "uppercase" }}>{item.label}</div>
+              <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>{item.icon}</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: colors.primary, marginBottom: "5px" }}>{item.value}</div>
+              <div style={{ fontSize: "0.8rem", color: colors.secondary, fontFamily: "'Source Sans Pro', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{item.label}</div>
             </div>
           ))}
         </div>
@@ -676,15 +676,16 @@ export default function Estimates() {
           ].map((cat, i) => (
             <div key={i} style={{
               backgroundColor: "#fff",
-              borderRadius: "8px",
-              padding: "15px",
+              borderRadius: "12px",
+              padding: "22px",
+              boxShadow: "0 4px 20px rgba(45, 90, 74, 0.1)",
+              border: `1px solid ${colors.accent}`,
               textAlign: "center",
-              borderTop: `4px solid ${cat.color}`,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
             }}>
-              <div style={{ fontWeight: 700, fontSize: "0.9rem", color: colors.dark, marginBottom: "4px" }}>{cat.name}</div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 700, color: cat.color }}>{cat.pct}</div>
-              <div style={{ fontSize: "0.7rem", color: colors.secondary, marginTop: "4px" }}>{cat.desc}</div>
+              <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>{["🏗️", "🪵", "🏠", "⚡", "🎨", "🔧"][i]}</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: colors.primary, marginBottom: "5px" }}>{cat.pct}</div>
+              <div style={{ fontWeight: 700, fontSize: "0.85rem", color: colors.dark, marginBottom: "4px" }}>{cat.name}</div>
+              <div style={{ fontSize: "0.75rem", color: colors.secondary, fontFamily: "'Source Sans Pro', sans-serif" }}>{cat.desc}</div>
             </div>
           ))}
         </div>

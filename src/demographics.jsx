@@ -327,29 +327,33 @@ export default function Demographics() {
               key={i}
               style={{
                 backgroundColor: "#fff",
-                borderRadius: "10px",
-                padding: "18px",
+                borderRadius: "12px",
+                padding: "22px",
+                boxShadow: "0 4px 20px rgba(45, 90, 74, 0.1)",
+                border: `1px solid ${colors.accent}`,
                 textAlign: "center",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
               }}
             >
-              <div style={{ fontSize: "1.6rem", marginBottom: "6px" }}>
+              <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>
                 {item.icon}
               </div>
               <div
                 style={{
-                  fontSize: "1.3rem",
+                  fontSize: "1.5rem",
                   fontWeight: 700,
                   color: colors.primary,
+                  marginBottom: "5px",
                 }}
               >
                 {item.value}
               </div>
               <div
                 style={{
-                  fontSize: "0.7rem",
+                  fontSize: "0.8rem",
                   color: colors.secondary,
+                  fontFamily: "'Source Sans Pro', sans-serif",
                   textTransform: "uppercase",
+                  letterSpacing: "0.5px",
                 }}
               >
                 {item.label}
@@ -583,29 +587,33 @@ export default function Demographics() {
               key={i}
               style={{
                 backgroundColor: "#fff",
-                borderRadius: "10px",
-                padding: "15px",
+                borderRadius: "12px",
+                padding: "22px",
+                boxShadow: "0 4px 20px rgba(45, 90, 74, 0.1)",
+                border: `1px solid ${colors.accent}`,
                 textAlign: "center",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
               }}
             >
-              <div style={{ fontSize: "1.4rem", marginBottom: "4px" }}>
+              <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>
                 {item.icon}
               </div>
               <div
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: "1.5rem",
                   fontWeight: 700,
                   color: colors.primary,
+                  marginBottom: "5px",
                 }}
               >
                 {item.value}
               </div>
               <div
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.8rem",
                   color: colors.secondary,
+                  fontFamily: "'Source Sans Pro', sans-serif",
                   textTransform: "uppercase",
+                  letterSpacing: "0.5px",
                 }}
               >
                 {item.label}
@@ -699,29 +707,33 @@ export default function Demographics() {
               key={i}
               style={{
                 backgroundColor: "#fff",
-                borderRadius: "10px",
-                padding: "15px",
+                borderRadius: "12px",
+                padding: "22px",
+                boxShadow: "0 4px 20px rgba(45, 90, 74, 0.1)",
+                border: `1px solid ${colors.accent}`,
                 textAlign: "center",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
               }}
             >
-              <div style={{ fontSize: "1.4rem", marginBottom: "4px" }}>
+              <div style={{ fontSize: "1.8rem", marginBottom: "8px" }}>
                 {item.icon}
               </div>
               <div
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: "1.5rem",
                   fontWeight: 700,
                   color: colors.primary,
+                  marginBottom: "5px",
                 }}
               >
                 {item.value}
               </div>
               <div
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.8rem",
                   color: colors.secondary,
+                  fontFamily: "'Source Sans Pro', sans-serif",
                   textTransform: "uppercase",
+                  letterSpacing: "0.5px",
                 }}
               >
                 {item.label}
