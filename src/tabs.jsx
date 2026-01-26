@@ -24,12 +24,19 @@ export default function NAHBDashboard() {
   };
 
   const [activeTab, setActiveTab] = useState(getTabFromURL);
+  // TEMPORARY: Font size state (remove this later)
+  const [fontSize, setFontSize] = useState(100); // percentage
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     params.set("tab", activeTab);
     window.history.replaceState({}, "", `?${params.toString()}`);
   }, [activeTab]);
+
+  // TEMPORARY: Apply font size to document (remove this later)
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${fontSize}%`;
+  }, [fontSize]);
 
   return (
     <div
@@ -45,8 +52,51 @@ export default function NAHBDashboard() {
           color: "#fff",
           padding: "30px 40px",
           borderBottom: `4px solid ${colors.sage}`,
+          position: "relative",
         }}
       >
+        {/* TEMPORARY: Font Size Controller (remove this block later) */}
+        <div style={{
+          position: "absolute",
+          top: "15px",
+          right: "20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          backgroundColor: "rgba(255,255,255,0.1)",
+          padding: "8px 15px",
+          borderRadius: "8px",
+          border: "1px solid rgba(255,255,255,0.2)",
+          zIndex: 1000,
+        }}>
+          <label htmlFor="font-size-selector" style={{ fontSize: "0.85rem", opacity: 0.8, pointerEvents: "none" }}>
+            Font Size:
+          </label>
+          <select
+            id="font-size-selector"
+            value={fontSize}
+            onChange={(e) => setFontSize(Number(e.target.value))}
+            style={{
+              padding: "6px 12px",
+              backgroundColor: "rgba(255,255,255,0.9)",
+              color: colors.ebony,
+              border: "1px solid rgba(255,255,255,0.3)",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontSize: "0.9rem",
+              fontWeight: 600,
+              outline: "none",
+              pointerEvents: "auto",
+            }}
+          >
+            <option value="100">Normal (100%)</option>
+            <option value="110">Large (110%)</option>
+            <option value="125">Larger (125%)</option>
+            <option value="150">Largest (150%)</option>
+          </select>
+        </div>
+        {/* END TEMPORARY */}
+
         <div style={{ textAlign: "center", marginBottom: "25px" }}>
           <div
             style={{

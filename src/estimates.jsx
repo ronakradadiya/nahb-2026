@@ -441,6 +441,8 @@ export default function Estimates() {
   const section4Ref = useRef(null);
   const section5Ref = useRef(null);
   const summaryRef = useRef(null);
+  const costSummaryCardsRef = useRef(null); // For Construction Cost Summary cards only
+  const categoryCardsRef = useRef(null); // For Cost Breakdown category cards only
 
   return (
     <div
@@ -458,7 +460,19 @@ export default function Estimates() {
           <strong> ${(totalCost / 1000000).toFixed(2)}M</strong>. Cost per square foot ranges from 
           <strong> $79.63</strong> (Havenwood) to <strong>$89.71</strong> (Riverbend), reflecting size and complexity differences.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "15px" }}>
+        <div 
+          ref={costSummaryCardsRef}
+          style={{ 
+            position: "relative", 
+            display: "grid", 
+            gridTemplateColumns: "repeat(6, 1fr)", 
+            gap: "15px",
+            padding: "20px",
+            backgroundColor: colors.light,
+            borderRadius: "10px",
+          }}
+        >
+          <ChartDownloadButton chartRef={costSummaryCardsRef} filename="construction-cost-summary-cards" />
           {[
             { label: "Total Hard Cost", value: `$${(totalCost / 1000000).toFixed(2)}M`, icon: "💰", color: colors.primary },
             { label: "Total Units", value: totalUnits.toString(), icon: "🏠", color: colors.secondary },
@@ -639,7 +653,19 @@ export default function Estimates() {
         </div>
 
         {/* Category Insights */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "12px" }}>
+        <div 
+          ref={categoryCardsRef}
+          style={{ 
+            position: "relative", 
+            display: "grid", 
+            gridTemplateColumns: "repeat(6, 1fr)", 
+            gap: "12px",
+            padding: "20px",
+            backgroundColor: colors.light,
+            borderRadius: "10px",
+          }}
+        >
+          <ChartDownloadButton chartRef={categoryCardsRef} filename="cost-breakdown-category-cards" />
           {[
             { name: "Foundation", pct: "8-12%", desc: "Slab & footings", color: categoryColors.Foundation },
             { name: "Framing", pct: "20-25%", desc: "Structure & roof", color: categoryColors.Framing },
