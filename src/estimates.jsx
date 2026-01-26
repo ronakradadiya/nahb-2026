@@ -451,63 +451,6 @@ export default function Estimates() {
         minHeight: "100vh",
       }}
     >
-      {/* Header */}
-      <header
-        ref={headerRef}
-        style={{
-          textAlign: "center",
-          marginBottom: "40px",
-          borderBottom: `3px solid ${colors.primary}`,
-          paddingBottom: "25px",
-          position: "relative",
-        }}
-      >
-        <DownloadButton sectionRef={headerRef} filename="header-estimates" />
-        <h1
-          style={{
-            fontSize: "2.5rem",
-            color: colors.primary,
-            margin: 0,
-            letterSpacing: "2px",
-          }}
-        >
-          CONSTRUCTION ESTIMATES
-        </h1>
-        <p
-          style={{
-            fontSize: "1rem",
-            color: colors.secondary,
-            marginTop: "10px",
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-          }}
-        >
-          Silverwood Heights | Hard Cost Analysis by Plan
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "15px",
-            marginTop: "20px",
-            flexWrap: "wrap",
-          }}
-        >
-          <span style={{ backgroundColor: colors.primary, color: "#fff", padding: "8px 20px", borderRadius: "20px", fontSize: "0.9rem" }}>
-            💰 ${(totalCost / 1000000).toFixed(2)}M Total
-          </span>
-          <span style={{ backgroundColor: colors.secondary, color: "#fff", padding: "8px 20px", borderRadius: "20px", fontSize: "0.9rem" }}>
-            🏠 {totalUnits} Units
-          </span>
-          <span style={{ backgroundColor: colors.success, color: "#fff", padding: "8px 20px", borderRadius: "20px", fontSize: "0.9rem" }}>
-            📐 ${avgCostPerSqft.toFixed(2)}/sqft Avg
-          </span>
-          <span style={{ backgroundColor: colors.blue, color: "#fff", padding: "8px 20px", borderRadius: "20px", fontSize: "0.9rem" }}>
-            📊 6 Plans
-          </span>
-        </div>
-      </header>
-
       {/* Section 1: Key Metrics */}
       <Section id="key-metrics" title="Construction Cost Summary" sectionNumber={1} sectionRef={section1Ref}>
         <p style={{ fontSize: "0.95rem", color: colors.dark, lineHeight: 1.7, marginBottom: "20px" }}>
