@@ -157,19 +157,32 @@ export default function ProjectManagement() {
     <button
       onClick={() => setActiveSection(id)}
       style={{
-        padding: '12px 20px',
-        backgroundColor: activeSection === id ? colors.secondary : 'transparent',
-        color: activeSection === id ? '#fff' : colors.light,
-        border: `2px solid ${activeSection === id ? colors.secondary : 'rgba(255,255,255,0.2)'}`,
+        padding: '14px 28px',
+        backgroundColor: activeSection === id ? orgColors.ebony : 'transparent',
+        color: activeSection === id ? orgColors.bone : orgColors.ebony,
+        border: `2px solid ${activeSection === id ? orgColors.ebony : orgColors.dun}`,
         borderRadius: '8px',
         cursor: 'pointer',
         fontFamily: "'Georgia', serif",
-        fontSize: '0.9rem',
-        fontWeight: 600,
+        fontSize: '1rem',
+        fontWeight: activeSection === id ? 700 : 600,
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '10px',
         transition: 'all 0.3s ease',
+        boxShadow: activeSection === id ? '0 4px 12px rgba(0,0,0,0.2)' : 'none',
+      }}
+      onMouseEnter={(e) => {
+        if (activeSection !== id) {
+          e.target.style.borderColor = orgColors.ebony;
+          e.target.style.transform = 'translateY(-2px)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (activeSection !== id) {
+          e.target.style.borderColor = orgColors.dun;
+          e.target.style.transform = 'translateY(0)';
+        }
       }}
     >
       <span>{icon}</span> {label}
@@ -178,35 +191,15 @@ export default function ProjectManagement() {
 
   return (
     <div style={{ fontFamily: "'Georgia', serif", backgroundColor: colors.light, minHeight: '100vh' }}>
-      
       {/* Header */}
       <header style={{ 
-        background: `linear-gradient(135deg, ${colors.dark} 0%, ${colors.primary} 100%)`,
-        color: '#fff',
-        padding: '30px 40px',
-        borderBottom: `4px solid ${colors.secondary}`
+        backgroundColor: '#fff',
+        padding: '25px 0px 40px 0px',
+        borderBottom: `1px solid ${colors.lightGray}`,
+        marginBottom: '30px'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <div>
-            <h1 style={{ fontSize: '2.2rem', margin: 0, fontWeight: 700, letterSpacing: '1px' }}>
-              PROJECT MANAGEMENT
-            </h1>
-          </div>
-          <div style={{ 
-            backgroundColor: 'rgba(255,255,255,0.1)', 
-            padding: '15px 25px', 
-            borderRadius: '10px',
-            textAlign: 'center',
-            border: `1px solid rgba(255,255,255,0.2)`
-          }}>
-            <div style={{ fontSize: '0.7rem', letterSpacing: '2px', opacity: 0.7, marginBottom: '5px' }}>POWERED BY</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: 700, color: colors.warning }}>PROCORE</div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>Single Source of Truth</div>
-          </div>
-        </div>
-        
         {/* Navigation */}
-        <nav style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <nav style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <NavButton id="overview" label="Overview" icon="📊" />
           <NavButton id="team" label="Team Structure" icon="👥" />
           <NavButton id="safety" label="Safety & QA" icon="🛡️" />
