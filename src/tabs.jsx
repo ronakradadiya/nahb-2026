@@ -52,12 +52,13 @@ export default function NAHBDashboard() {
             style={{
               fontSize: "0.85rem",
               letterSpacing: "4px",
-              color: colors.sage,
+              color: colors.dun,
               marginBottom: "8px",
               textTransform: "uppercase",
+              opacity: 0.85,
             }}
           >
-            NAHB Student Competition 2025
+            Viona Homes
           </div>
           <h1
             style={{
@@ -67,10 +68,10 @@ export default function NAHBDashboard() {
               letterSpacing: "1px",
             }}
           >
-            LILBURN RESIDENTIAL DEVELOPMENT
+            SILVERWOOD HEIGHTS
           </h1>
           <p style={{ margin: "8px 0 0", fontSize: "1rem", opacity: 0.8 }}>
-            Gwinnett County, Georgia
+            Premium Residential Development
           </p>
         </div>
 
@@ -241,10 +242,10 @@ export default function NAHBDashboard() {
         }}
       >
         <p style={{ margin: 0, fontSize: "0.9rem", opacity: 0.8 }}>
-          NAHB Student Competition 2025 | Lilburn Residential Development
+          Viona Homes | Silverwood Heights
         </p>
         <p style={{ margin: "5px 0 0", fontSize: "0.8rem", opacity: 0.6 }}>
-          Gwinnett County, Georgia
+          Premium Residential Development
         </p>
       </footer>
     </div>

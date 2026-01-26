@@ -188,15 +188,9 @@ export default function ProjectManagement() {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
-            <div style={{ fontSize: '0.85rem', letterSpacing: '4px', color: colors.secondary, marginBottom: '8px', textTransform: 'uppercase' }}>
-              NAHB Student Competition 2025
-            </div>
             <h1 style={{ fontSize: '2.2rem', margin: 0, fontWeight: 700, letterSpacing: '1px' }}>
               PROJECT MANAGEMENT
             </h1>
-            <p style={{ margin: '8px 0 0', fontSize: '1rem', opacity: 0.8 }}>
-              Lilburn Residential Development | Gwinnett County, Georgia
-            </p>
           </div>
           <div style={{ 
             backgroundColor: 'rgba(255,255,255,0.1)', 
