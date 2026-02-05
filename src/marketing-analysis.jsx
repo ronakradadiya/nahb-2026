@@ -17,6 +17,7 @@ import {
   Scatter,
   ComposedChart,
   Area,
+  ReferenceLine,
 } from "recharts";
 import html2canvas from "html2canvas";
 
@@ -36,6 +37,32 @@ const colors = {
 // ============================================
 // ORIGINAL DOCUMENT DATA
 // ============================================
+
+const priceAppreciationData = [
+  {
+    phase: "Construction Start",
+    price: 388800, // 20% less than $486,000
+    year: "2027",
+    discount: "-20%",
+    description: "Early buyer incentive",
+  },
+  {
+    phase: "Mid Construction",
+    price: 486000, // Median price
+    year: "2029",
+    discount: "0%",
+    description: "Market price",
+  },
+  {
+    phase: "Close Out",
+    price: 583200, // 20% more than $486,000
+    year: "2031",
+    discount: "+20%",
+    description: "Premium for finished product",
+  },
+];
+
+const medianPrice = 486000;
 
 // Comparable Sales Data (ORIGINAL)
 const comparableSalesData = [
@@ -243,38 +270,117 @@ const financialIncentivesData = [
 
 // Our Proposed Sales Prices (Silverwood Heights)
 const proposedPlansData = [
-  { name: "The Havenwood", config: "Single-Story", lotSize: 7500, sqft: 2156, basePrice: 470000, pricePerSqft: 218, netWithOptions: 512496 },
-  { name: "The Sterling", config: "1.5 Story w/ Loft", lotSize: 7500, sqft: 2212, basePrice: 484000, pricePerSqft: 219, netWithOptions: 527642 },
-  { name: "The Brookside", config: "Single Story", lotSize: 7500, sqft: 2327, basePrice: 499900, pricePerSqft: 215, netWithOptions: 543847 },
-  { name: "The Kirkwood", config: "Two Story", lotSize: 9000, sqft: 2696, basePrice: 559990, pricePerSqft: 208, netWithOptions: 621606 },
-  { name: "The Ingram", config: "Two-Story (5-Bed)", lotSize: 9000, sqft: 2705, basePrice: 564990, pricePerSqft: 209, netWithOptions: 627288 },
-  { name: "The Riverbend", config: "Two-Story (4 bed)", lotSize: 9000, sqft: 2924, basePrice: 599990, pricePerSqft: 205, netWithOptions: 665151 },
+  {
+    name: "The Havenwood",
+    config: "Single-Story",
+    lotSize: 7500,
+    sqft: 2156,
+    basePrice: 470000,
+    pricePerSqft: 218,
+    netWithOptions: 512496,
+  },
+  {
+    name: "The Sterling",
+    config: "1.5 Story w/ Loft",
+    lotSize: 7500,
+    sqft: 2212,
+    basePrice: 484000,
+    pricePerSqft: 219,
+    netWithOptions: 527642,
+  },
+  {
+    name: "The Brookside",
+    config: "Single Story",
+    lotSize: 7500,
+    sqft: 2327,
+    basePrice: 499900,
+    pricePerSqft: 215,
+    netWithOptions: 543847,
+  },
+  {
+    name: "The Kirkwood",
+    config: "Two Story",
+    lotSize: 9000,
+    sqft: 2696,
+    basePrice: 559990,
+    pricePerSqft: 208,
+    netWithOptions: 621606,
+  },
+  {
+    name: "The Ingram",
+    config: "Two-Story (5-Bed)",
+    lotSize: 9000,
+    sqft: 2705,
+    basePrice: 564990,
+    pricePerSqft: 209,
+    netWithOptions: 627288,
+  },
+  {
+    name: "The Riverbend",
+    config: "Two-Story (4 bed)",
+    lotSize: 9000,
+    sqft: 2924,
+    basePrice: 599990,
+    pricePerSqft: 205,
+    netWithOptions: 665151,
+  },
 ];
 
 // Calculate averages for comparison
-const proposedAvgPrice = Math.round(proposedPlansData.reduce((sum, p) => sum + p.basePrice, 0) / proposedPlansData.length);
-const proposedAvgSqft = Math.round(proposedPlansData.reduce((sum, p) => sum + p.sqft, 0) / proposedPlansData.length);
-const proposedAvgPPSF = Math.round(proposedPlansData.reduce((sum, p) => sum + p.pricePerSqft, 0) / proposedPlansData.length);
+const proposedAvgPrice = Math.round(
+  proposedPlansData.reduce((sum, p) => sum + p.basePrice, 0) /
+    proposedPlansData.length,
+);
+const proposedAvgSqft = Math.round(
+  proposedPlansData.reduce((sum, p) => sum + p.sqft, 0) /
+    proposedPlansData.length,
+);
+const proposedAvgPPSF = Math.round(
+  proposedPlansData.reduce((sum, p) => sum + p.pricePerSqft, 0) /
+    proposedPlansData.length,
+);
 
 // Competitor averages (from comparableSalesData)
-const competitorAvgPrice = Math.round([535000, 497180, 536000, 511500, 540300].reduce((a, b) => a + b, 0) / 5);
-const competitorAvgSqft = Math.round([3078, 2543, 2543, 2504, 2883].reduce((a, b) => a + b, 0) / 5);
-const competitorAvgPPSF = Math.round([174, 195, 211, 204, 187].reduce((a, b) => a + b, 0) / 5);
+const competitorAvgPrice = Math.round(
+  [535000, 497180, 536000, 511500, 540300].reduce((a, b) => a + b, 0) / 5,
+);
+const competitorAvgSqft = Math.round(
+  [3078, 2543, 2543, 2504, 2883].reduce((a, b) => a + b, 0) / 5,
+);
+const competitorAvgPPSF = Math.round(
+  [174, 195, 211, 204, 187].reduce((a, b) => a + b, 0) / 5,
+);
 
 // Comparison data for pie/bar charts
 const priceComparisonData = [
-  { name: "Silverwood Heights", value: proposedAvgPrice, color: colors.primary },
-  { name: "Market Competitors", value: competitorAvgPrice, color: colors.secondary },
+  {
+    name: "Silverwood Heights",
+    value: proposedAvgPrice,
+    color: colors.primary,
+  },
+  {
+    name: "Market Competitors",
+    value: competitorAvgPrice,
+    color: colors.secondary,
+  },
 ];
 
 const ppsfComparisonData = [
   { name: "Silverwood Heights", value: proposedAvgPPSF, color: colors.primary },
-  { name: "Market Competitors", value: competitorAvgPPSF, color: colors.secondary },
+  {
+    name: "Market Competitors",
+    value: competitorAvgPPSF,
+    color: colors.secondary,
+  },
 ];
 
 const sqftComparisonData = [
   { name: "Silverwood Heights", value: proposedAvgSqft, color: colors.primary },
-  { name: "Market Competitors", value: competitorAvgSqft, color: colors.secondary },
+  {
+    name: "Market Competitors",
+    value: competitorAvgSqft,
+    color: colors.secondary,
+  },
 ];
 
 // ============================================
@@ -485,7 +591,7 @@ const ChartDownloadButton = ({ chartRef, filename }) => {
     try {
       // Hide the button before capturing
       if (buttonRef.current) {
-        buttonRef.current.style.display = 'none';
+        buttonRef.current.style.display = "none";
       }
 
       const canvas = await html2canvas(chartRef.current, {
@@ -504,7 +610,7 @@ const ChartDownloadButton = ({ chartRef, filename }) => {
     } finally {
       // Show the button again after capturing
       if (buttonRef.current) {
-        buttonRef.current.style.display = 'flex';
+        buttonRef.current.style.display = "flex";
       }
       setDownloading(false);
     }
@@ -556,7 +662,7 @@ const DownloadButton = ({ sectionRef, filename }) => {
     try {
       // Hide the button before capturing
       if (buttonRef.current) {
-        buttonRef.current.style.display = 'none';
+        buttonRef.current.style.display = "none";
       }
 
       const canvas = await html2canvas(sectionRef.current, {
@@ -575,7 +681,7 @@ const DownloadButton = ({ sectionRef, filename }) => {
     } finally {
       // Show the button again after capturing
       if (buttonRef.current) {
-        buttonRef.current.style.display = 'flex';
+        buttonRef.current.style.display = "flex";
       }
       setDownloading(false);
     }
@@ -610,7 +716,6 @@ const DownloadButton = ({ sectionRef, filename }) => {
     </button>
   );
 };
-
 
 // Section Wrapper Component
 const Section = ({ id, title, sectionNumber, children, sectionRef }) => {
@@ -696,6 +801,7 @@ const MarketingAnalysis = () => {
   const section12Ref = useRef(null);
   const section13Ref = useRef(null);
   const section14Ref = useRef(null);
+  const section15Ref = useRef(null);
   const summaryRef = useRef(null);
 
   return (
@@ -848,7 +954,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Absorption Rate Chart */}
-          <ChartBox title="Monthly Absorption Rate" filename="absorption-rate-chart">
+          <ChartBox
+            title="Monthly Absorption Rate"
+            filename="absorption-rate-chart"
+          >
             <ResponsiveContainer width="100%" height={180}>
               <BarChart
                 data={absorptionData}
@@ -900,7 +1009,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Market Health Indicators */}
-          <ChartBox title="Market Health Indicators" filename="market-health-indicators">
+          <ChartBox
+            title="Market Health Indicators"
+            filename="market-health-indicators"
+          >
             <div
               style={{ display: "flex", flexDirection: "column", gap: "12px" }}
             >
@@ -940,8 +1052,8 @@ const MarketingAnalysis = () => {
                           item.status === "Healthy" || item.status === "Tight"
                             ? colors.success
                             : item.status === "Elevated"
-                            ? colors.warning
-                            : colors.secondary,
+                              ? colors.warning
+                              : colors.secondary,
                       }}
                     >
                       {item.status}
@@ -1048,7 +1160,10 @@ const MarketingAnalysis = () => {
           }}
         >
           {/* Price Trend Chart */}
-          <ChartBox title="Median Listing vs. Sold Price Trend" filename="price-trend-chart">
+          <ChartBox
+            title="Median Listing vs. Sold Price Trend"
+            filename="price-trend-chart"
+          >
             <ResponsiveContainer width="100%" height={280}>
               <LineChart
                 data={priceTrendData}
@@ -1094,7 +1209,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Days on Market Trend */}
-          <ChartBox title="Median Days on Market Trend" filename="dom-trend-chart">
+          <ChartBox
+            title="Median Days on Market Trend"
+            filename="dom-trend-chart"
+          >
             <ResponsiveContainer width="100%" height={280}>
               <ComposedChart
                 data={domTrendData}
@@ -1399,7 +1517,7 @@ const MarketingAnalysis = () => {
                 >
                   {Math.round(
                     newConstructionData.reduce((a, b) => a + b.sqft, 0) /
-                      newConstructionData.length
+                      newConstructionData.length,
                   ).toLocaleString()}
                 </td>
                 <td
@@ -1412,7 +1530,7 @@ const MarketingAnalysis = () => {
                   $
                   {Math.round(
                     newConstructionData.reduce((a, b) => a + b.price, 0) /
-                      newConstructionData.length
+                      newConstructionData.length,
                   ).toLocaleString()}
                 </td>
                 <td
@@ -1426,8 +1544,8 @@ const MarketingAnalysis = () => {
                   {Math.round(
                     newConstructionData.reduce(
                       (a, b) => a + b.pricePerSqft,
-                      0
-                    ) / newConstructionData.length
+                      0,
+                    ) / newConstructionData.length,
                   )}
                 </td>
               </tr>
@@ -1576,7 +1694,10 @@ const MarketingAnalysis = () => {
           }}
         >
           {/* Scatter Plot */}
-          <ChartBox title="Price vs. Square Footage Positioning" filename="competition-scatter-chart">
+          <ChartBox
+            title="Price vs. Square Footage Positioning"
+            filename="competition-scatter-chart"
+          >
             <ResponsiveContainer width="100%" height={300}>
               <ScatterChart
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -1634,7 +1755,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Buyer Segments Pie */}
-          <ChartBox title="Target Buyer Segments" filename="buyer-segments-pie-chart">
+          <ChartBox
+            title="Target Buyer Segments"
+            filename="buyer-segments-pie-chart"
+          >
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
@@ -1681,7 +1805,10 @@ const MarketingAnalysis = () => {
           }}
         >
           {/* Lot Premiums */}
-          <ChartBox title="Lot Premium Opportunities ($5K - $15K)" filename="lot-premiums-chart">
+          <ChartBox
+            title="Lot Premium Opportunities ($5K - $15K)"
+            filename="lot-premiums-chart"
+          >
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={lotPremiumData} margin={{ left: 20, right: 30 }}>
                 <CartesianGrid
@@ -1737,7 +1864,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Price Range Distribution */}
-          <ChartBox title="Price Range Distribution" filename="price-range-distribution-chart">
+          <ChartBox
+            title="Price Range Distribution"
+            filename="price-range-distribution-chart"
+          >
             <ResponsiveContainer width="100%" height={250}>
               <BarChart
                 data={priceRangeData}
@@ -1882,15 +2012,15 @@ const MarketingAnalysis = () => {
                         idx === 0
                           ? "#E8F5E9"
                           : idx === 1
-                          ? "#FFF8E1"
-                          : colors.light,
+                            ? "#FFF8E1"
+                            : colors.light,
                       borderRadius: "8px",
                       borderLeft: `4px solid ${
                         idx === 0
                           ? colors.success
                           : idx === 1
-                          ? colors.warning
-                          : colors.accent
+                            ? colors.warning
+                            : colors.accent
                       }`,
                     }}
                   >
@@ -1997,7 +2127,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Rental Trend Chart */}
-          <ChartBox title="Rent Price: 2024 vs 2025" filename="rental-trend-chart">
+          <ChartBox
+            title="Rent Price: 2024 vs 2025"
+            filename="rental-trend-chart"
+          >
             <ResponsiveContainer width="100%" height={200}>
               <LineChart
                 data={rentalTrendData}
@@ -2136,7 +2269,10 @@ const MarketingAnalysis = () => {
           }}
         >
           {/* Income by Age */}
-          <ChartBox title="Household Income by Age Cohort" filename="income-by-age-chart">
+          <ChartBox
+            title="Household Income by Age Cohort"
+            filename="income-by-age-chart"
+          >
             <ResponsiveContainer width="100%" height={200}>
               <BarChart
                 data={incomeByAgeData}
@@ -2223,7 +2359,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Affordability Analysis */}
-          <ChartBox title="Affordability Gap Analysis" filename="affordability-analysis">
+          <ChartBox
+            title="Affordability Gap Analysis"
+            filename="affordability-analysis"
+          >
             <div
               style={{ display: "flex", flexDirection: "column", gap: "15px" }}
             >
@@ -2307,9 +2446,19 @@ const MarketingAnalysis = () => {
         sectionNumber={14}
         sectionRef={section14Ref}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: "20px",
+            marginBottom: "20px",
+          }}
+        >
           {/* Price Comparison Pie */}
-          <ChartBox title="Average Price Comparison" filename="price-comparison-pie">
+          <ChartBox
+            title="Average Price Comparison"
+            filename="price-comparison-pie"
+          >
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie
@@ -2320,7 +2469,7 @@ const MarketingAnalysis = () => {
                   outerRadius={80}
                   paddingAngle={3}
                   dataKey="value"
-                  label={({ name, value }) => `$${(value/1000).toFixed(0)}K`}
+                  label={({ name, value }) => `$${(value / 1000).toFixed(0)}K`}
                 >
                   {priceComparisonData.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
@@ -2329,10 +2478,32 @@ const MarketingAnalysis = () => {
                 <Tooltip formatter={(v) => `$${v.toLocaleString()}`} />
               </PieChart>
             </ResponsiveContainer>
-            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "20px",
+                marginTop: "10px",
+              }}
+            >
               {priceComparisonData.map((item, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
-                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: item.color,
+                      borderRadius: "2px",
+                    }}
+                  />
                   <span>{item.name}</span>
                 </div>
               ))}
@@ -2340,7 +2511,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* $/Sq Ft Comparison Pie */}
-          <ChartBox title="Price per Sq Ft Comparison" filename="ppsf-comparison-pie">
+          <ChartBox
+            title="Price per Sq Ft Comparison"
+            filename="ppsf-comparison-pie"
+          >
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie
@@ -2360,10 +2534,32 @@ const MarketingAnalysis = () => {
                 <Tooltip formatter={(v) => `$${v}/sq ft`} />
               </PieChart>
             </ResponsiveContainer>
-            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "20px",
+                marginTop: "10px",
+              }}
+            >
               {ppsfComparisonData.map((item, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
-                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: item.color,
+                      borderRadius: "2px",
+                    }}
+                  />
                   <span>{item.name}</span>
                 </div>
               ))}
@@ -2371,7 +2567,10 @@ const MarketingAnalysis = () => {
           </ChartBox>
 
           {/* Sq Ft Comparison Pie */}
-          <ChartBox title="Average Sq Ft Comparison" filename="sqft-comparison-pie">
+          <ChartBox
+            title="Average Sq Ft Comparison"
+            filename="sqft-comparison-pie"
+          >
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie
@@ -2391,10 +2590,32 @@ const MarketingAnalysis = () => {
                 <Tooltip formatter={(v) => `${v.toLocaleString()} sq ft`} />
               </PieChart>
             </ResponsiveContainer>
-            <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "20px",
+                marginTop: "10px",
+              }}
+            >
               {sqftComparisonData.map((item, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.75rem" }}>
-                  <div style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: "2px" }} />
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: item.color,
+                      borderRadius: "2px",
+                    }}
+                  />
                   <span>{item.name}</span>
                 </div>
               ))}
@@ -2403,77 +2624,534 @@ const MarketingAnalysis = () => {
         </div>
 
         {/* Detailed Comparison */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "20px" }}>
-          <ChartBox title="Our Proposed Plans - Silverwood Heights" filename="proposed-plans-table">
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.5fr 1fr",
+            gap: "20px",
+          }}
+        >
+          <ChartBox
+            title="Our Proposed Plans - Silverwood Heights"
+            filename="proposed-plans-table"
+          >
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: "0.85rem",
+              }}
+            >
               <thead>
                 <tr style={{ backgroundColor: colors.primary, color: "#fff" }}>
-                  <th style={{ padding: "10px", textAlign: "left" }}>Plan Name</th>
-                  <th style={{ padding: "10px", textAlign: "center" }}>Config</th>
+                  <th style={{ padding: "10px", textAlign: "left" }}>
+                    Plan Name
+                  </th>
+                  <th style={{ padding: "10px", textAlign: "center" }}>
+                    Config
+                  </th>
                   <th style={{ padding: "10px", textAlign: "right" }}>Sq Ft</th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>Base Price</th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>$/Sq Ft</th>
+                  <th style={{ padding: "10px", textAlign: "right" }}>
+                    Base Price
+                  </th>
+                  <th style={{ padding: "10px", textAlign: "right" }}>
+                    $/Sq Ft
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {proposedPlansData.map((plan, idx) => (
-                  <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? "#fff" : colors.light }}>
-                    <td style={{ padding: "10px", fontWeight: 600, color: colors.primary }}>{plan.name}</td>
-                    <td style={{ padding: "10px", textAlign: "center", fontSize: "0.75rem" }}>{plan.config}</td>
-                    <td style={{ padding: "10px", textAlign: "right" }}>{plan.sqft.toLocaleString()}</td>
-                    <td style={{ padding: "10px", textAlign: "right" }}>${plan.basePrice.toLocaleString()}</td>
-                    <td style={{ padding: "10px", textAlign: "right", fontWeight: 600, color: colors.success }}>${plan.pricePerSqft}</td>
+                  <tr
+                    key={idx}
+                    style={{
+                      backgroundColor: idx % 2 === 0 ? "#fff" : colors.light,
+                    }}
+                  >
+                    <td
+                      style={{
+                        padding: "10px",
+                        fontWeight: 600,
+                        color: colors.primary,
+                      }}
+                    >
+                      {plan.name}
+                    </td>
+                    <td
+                      style={{
+                        padding: "10px",
+                        textAlign: "center",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      {plan.config}
+                    </td>
+                    <td style={{ padding: "10px", textAlign: "right" }}>
+                      {plan.sqft.toLocaleString()}
+                    </td>
+                    <td style={{ padding: "10px", textAlign: "right" }}>
+                      ${plan.basePrice.toLocaleString()}
+                    </td>
+                    <td
+                      style={{
+                        padding: "10px",
+                        textAlign: "right",
+                        fontWeight: 600,
+                        color: colors.success,
+                      }}
+                    >
+                      ${plan.pricePerSqft}
+                    </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr style={{ backgroundColor: colors.primary, color: "#fff" }}>
-                  <td style={{ padding: "10px", fontWeight: 600 }} colSpan={2}>AVERAGE</td>
-                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>{proposedAvgSqft.toLocaleString()}</td>
-                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>${proposedAvgPrice.toLocaleString()}</td>
-                  <td style={{ padding: "10px", textAlign: "right", fontWeight: 600 }}>${proposedAvgPPSF}</td>
+                  <td style={{ padding: "10px", fontWeight: 600 }} colSpan={2}>
+                    AVERAGE
+                  </td>
+                  <td
+                    style={{
+                      padding: "10px",
+                      textAlign: "right",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {proposedAvgSqft.toLocaleString()}
+                  </td>
+                  <td
+                    style={{
+                      padding: "10px",
+                      textAlign: "right",
+                      fontWeight: 600,
+                    }}
+                  >
+                    ${proposedAvgPrice.toLocaleString()}
+                  </td>
+                  <td
+                    style={{
+                      padding: "10px",
+                      textAlign: "right",
+                      fontWeight: 600,
+                    }}
+                  >
+                    ${proposedAvgPPSF}
+                  </td>
                 </tr>
               </tfoot>
             </table>
           </ChartBox>
 
-          <ChartBox title="Key Competitive Insights" filename="competitive-insights">
-            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.primary}` }}>
-                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Price Difference</div>
-                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.primary }}>
-                  ${Math.abs(proposedAvgPrice - competitorAvgPrice).toLocaleString()}
+          <ChartBox
+            title="Key Competitive Insights"
+            filename="competitive-insights"
+          >
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
+              <div
+                style={{
+                  padding: "15px",
+                  backgroundColor: colors.light,
+                  borderRadius: "8px",
+                  borderLeft: `4px solid ${colors.primary}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    color: colors.secondary,
+                    marginBottom: "5px",
+                  }}
+                >
+                  Price Difference
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.3rem",
+                    fontWeight: 700,
+                    color: colors.primary,
+                  }}
+                >
+                  $
+                  {Math.abs(
+                    proposedAvgPrice - competitorAvgPrice,
+                  ).toLocaleString()}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: colors.dark }}>
-                  {proposedAvgPrice < competitorAvgPrice ? "Below" : "Above"} market avg ({((Math.abs(proposedAvgPrice - competitorAvgPrice)) / competitorAvgPrice * 100).toFixed(1)}%)
+                  {proposedAvgPrice < competitorAvgPrice ? "Below" : "Above"}{" "}
+                  market avg (
+                  {(
+                    (Math.abs(proposedAvgPrice - competitorAvgPrice) /
+                      competitorAvgPrice) *
+                    100
+                  ).toFixed(1)}
+                  %)
                 </div>
               </div>
-              
-              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.success}` }}>
-                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>$/Sq Ft Premium</div>
-                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.success }}>
+
+              <div
+                style={{
+                  padding: "15px",
+                  backgroundColor: colors.light,
+                  borderRadius: "8px",
+                  borderLeft: `4px solid ${colors.success}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    color: colors.secondary,
+                    marginBottom: "5px",
+                  }}
+                >
+                  $/Sq Ft Premium
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.3rem",
+                    fontWeight: 700,
+                    color: colors.success,
+                  }}
+                >
                   +${proposedAvgPPSF - competitorAvgPPSF}/sf
                 </div>
                 <div style={{ fontSize: "0.75rem", color: colors.dark }}>
-                  New construction commands {((proposedAvgPPSF - competitorAvgPPSF) / competitorAvgPPSF * 100).toFixed(1)}% premium
+                  New construction commands{" "}
+                  {(
+                    ((proposedAvgPPSF - competitorAvgPPSF) /
+                      competitorAvgPPSF) *
+                    100
+                  ).toFixed(1)}
+                  % premium
                 </div>
               </div>
 
-              <div style={{ padding: "15px", backgroundColor: colors.light, borderRadius: "8px", borderLeft: `4px solid ${colors.secondary}` }}>
-                <div style={{ fontSize: "0.85rem", color: colors.secondary, marginBottom: "5px" }}>Size Comparison</div>
-                <div style={{ fontSize: "1.3rem", fontWeight: 700, color: colors.secondary }}>
-                  {Math.abs(proposedAvgSqft - competitorAvgSqft)} sf {proposedAvgSqft < competitorAvgSqft ? "smaller" : "larger"}
+              <div
+                style={{
+                  padding: "15px",
+                  backgroundColor: colors.light,
+                  borderRadius: "8px",
+                  borderLeft: `4px solid ${colors.secondary}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    color: colors.secondary,
+                    marginBottom: "5px",
+                  }}
+                >
+                  Size Comparison
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.3rem",
+                    fontWeight: 700,
+                    color: colors.secondary,
+                  }}
+                >
+                  {Math.abs(proposedAvgSqft - competitorAvgSqft)} sf{" "}
+                  {proposedAvgSqft < competitorAvgSqft ? "smaller" : "larger"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: colors.dark }}>
-                  {proposedAvgSqft < competitorAvgSqft ? "More efficient layouts" : "Larger homes"} vs competitors
+                  {proposedAvgSqft < competitorAvgSqft
+                    ? "More efficient layouts"
+                    : "Larger homes"}{" "}
+                  vs competitors
                 </div>
               </div>
 
-              <div style={{ padding: "12px", backgroundColor: "#E8F5E9", borderRadius: "8px", fontSize: "0.8rem" }}>
-                <strong>Value Proposition:</strong> New construction with modern features, energy efficiency, and warranties justifies the premium over resale competitors.
+              <div
+                style={{
+                  padding: "12px",
+                  backgroundColor: "#E8F5E9",
+                  borderRadius: "8px",
+                  fontSize: "0.8rem",
+                }}
+              >
+                <strong>Value Proposition:</strong> New construction with modern
+                features, energy efficiency, and warranties justifies the
+                premium over resale competitors.
               </div>
             </div>
           </ChartBox>
+        </div>
+      </Section>
+
+      {/* Section 15: Price Appreciation Graph */}
+      <Section
+        id="price-appreciation"
+        title="Price Appreciation by Construction Phase"
+        sectionNumber={15}
+        sectionRef={section15Ref}
+      >
+        <p
+          style={{
+            fontSize: "0.95rem",
+            color: colors.dark,
+            lineHeight: 1.7,
+            marginBottom: "20px",
+          }}
+        >
+          Buyers who purchase early in the construction cycle benefit from a{" "}
+          <strong>20% discount</strong> ($388,800), while those purchasing at
+          project close-out pay a <strong>20% premium</strong> ($583,200) based
+          on the median sale price of <strong>$486,000</strong>. This reflects
+          typical market appreciation during the 2027-2031 build cycle.
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr",
+            gap: "20px",
+          }}
+        >
+          {/* Main Chart */}
+          <ChartBox
+            title="Price Appreciation Graph"
+            filename="price-appreciation-chart"
+          >
+            <ResponsiveContainer width="100%" height={320}>
+              <ComposedChart
+                data={priceAppreciationData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={colors.accent}
+                  opacity={0.5}
+                />
+                <XAxis
+                  dataKey="phase"
+                  tick={{ fill: colors.dark, fontSize: 11 }}
+                  axisLine={{ stroke: colors.dark }}
+                />
+                <YAxis
+                  tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`}
+                  tick={{ fill: colors.dark }}
+                  domain={[350000, 620000]}
+                  axisLine={{ stroke: colors.dark }}
+                  label={{
+                    value: "Price ($)",
+                    angle: -90,
+                    position: "insideLeft",
+                    fill: colors.dark,
+                    fontSize: 12,
+                  }}
+                />
+                <Tooltip
+                  formatter={(v) => [`$${v.toLocaleString()}`, "Price"]}
+                  labelFormatter={(label) => `Phase: ${label}`}
+                  contentStyle={{
+                    backgroundColor: colors.light,
+                    border: `2px solid ${colors.primary}`,
+                    borderRadius: "8px",
+                  }}
+                />
+                <ReferenceLine
+                  y={486000}
+                  stroke={colors.secondary}
+                  strokeDasharray="5 5"
+                  strokeWidth={2}
+                  label={{
+                    value: "Median $486K",
+                    position: "right",
+                    fill: colors.secondary,
+                    fontSize: 11,
+                  }}
+                />
+                <Bar
+                  dataKey="price"
+                  name="Sale Price"
+                  radius={[6, 6, 0, 0]}
+                  barSize={80}
+                >
+                  <Cell fill={colors.success} />{" "}
+                  {/* Start - Green (discount) */}
+                  <Cell fill={colors.primary} /> {/* Mid - Primary */}
+                  <Cell fill={colors.warning} /> {/* Close - Gold (premium) */}
+                </Bar>
+                <Line
+                  type="monotone"
+                  dataKey="price"
+                  stroke={colors.danger}
+                  strokeWidth={3}
+                  dot={{
+                    r: 8,
+                    fill: colors.danger,
+                    strokeWidth: 2,
+                    stroke: "#fff",
+                  }}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+
+            {/* Year Labels */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginTop: "10px",
+                paddingLeft: "50px",
+                paddingRight: "30px",
+              }}
+            >
+              {priceAppreciationData.map((item, idx) => (
+                <div key={idx} style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      fontSize: "0.9rem",
+                      fontWeight: 700,
+                      color: colors.dark,
+                      backgroundColor: colors.light,
+                      padding: "4px 12px",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    {item.year}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ChartBox>
+
+          {/* Side Panel - Phase Details */}
+          <ChartBox
+            title="Phase Pricing Details"
+            filename="phase-pricing-details"
+          >
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
+              {priceAppreciationData.map((item, idx) => {
+                const bgColor =
+                  idx === 0 ? "#E8F5E9" : idx === 1 ? colors.light : "#FFF8E1";
+                const borderColor =
+                  idx === 0
+                    ? colors.success
+                    : idx === 1
+                      ? colors.primary
+                      : colors.warning;
+                const icon = idx === 0 ? "🏗️" : idx === 1 ? "🔨" : "🏠";
+
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      backgroundColor: bgColor,
+                      borderRadius: "10px",
+                      padding: "18px",
+                      borderLeft: `5px solid ${borderColor}`,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <span style={{ fontSize: "1.5rem" }}>{icon}</span>
+                      <div>
+                        <div
+                          style={{
+                            fontWeight: 700,
+                            fontSize: "0.95rem",
+                            color: colors.dark,
+                          }}
+                        >
+                          {item.phase}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "0.75rem",
+                            color: colors.secondary,
+                          }}
+                        >
+                          {item.year}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "1.4rem",
+                        fontWeight: 700,
+                        color: borderColor,
+                        marginBottom: "4px",
+                      }}
+                    >
+                      ${item.price.toLocaleString()}
+                    </div>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        color: "#fff",
+                        backgroundColor: borderColor,
+                        padding: "2px 8px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {item.discount} from median
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        color: colors.secondary,
+                        marginTop: "6px",
+                      }}
+                    >
+                      {item.description}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </ChartBox>
+        </div>
+
+        {/* Key Insight */}
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "18px 25px",
+            backgroundColor: colors.primary,
+            borderRadius: "10px",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            <h4 style={{ margin: "0 0 6px", fontSize: "1rem" }}>
+              📈 Buyer Timing Advantage
+            </h4>
+            <p style={{ margin: 0, fontSize: "0.85rem", opacity: 0.9 }}>
+              Early buyers save <strong>$97,200</strong> vs close-out pricing.
+              Total appreciation of <strong>$194,400 (50%)</strong> from start
+              to finish.
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: "25px" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "1.4rem", fontWeight: 700 }}>$388.8K</div>
+              <div style={{ fontSize: "0.7rem", opacity: 0.8 }}>
+                Start Price
+              </div>
+            </div>
+            <div style={{ textAlign: "center", fontSize: "1.5rem" }}>→</div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "1.4rem", fontWeight: 700 }}>$583.2K</div>
+              <div style={{ fontSize: "0.7rem", opacity: 0.8 }}>
+                Close Price
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 
