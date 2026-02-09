@@ -5,6 +5,7 @@ import ProjectManagement from "./project-management";
 import Sustainability from "./sustainability";
 import Financials from "./financials";
 import Estimates from "./estimates";
+import CDMR from "./cdmr";
 
 // Color palette - earthy sage tones
 const colors = {
@@ -19,24 +20,17 @@ export default function NAHBDashboard() {
   const getTabFromURL = () => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
-    const validTabs = ["sales", "demographics", "project", "sustainability", "financials", "estimates"];
+    const validTabs = ["sales", "demographics", "project", "sustainability", "financials", "estimates", "cdmr"];
     return validTabs.includes(tab) ? tab : "sales";
   };
 
   const [activeTab, setActiveTab] = useState(getTabFromURL);
-  // TEMPORARY: Font size state (remove this later)
-  const [fontSize, setFontSize] = useState(100); // percentage
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     params.set("tab", activeTab);
     window.history.replaceState({}, "", `?${params.toString()}`);
   }, [activeTab]);
-
-  // TEMPORARY: Apply font size to document (remove this later)
-  useEffect(() => {
-    document.documentElement.style.fontSize = `${fontSize}%`;
-  }, [fontSize]);
 
   return (
     <div
@@ -52,63 +46,19 @@ export default function NAHBDashboard() {
           color: "#fff",
           padding: "30px 40px",
           borderBottom: `4px solid ${colors.sage}`,
-          position: "relative",
         }}
       >
-        {/* TEMPORARY: Font Size Controller (remove this block later) */}
-        <div style={{
-          position: "absolute",
-          top: "15px",
-          right: "20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          backgroundColor: "rgba(255,255,255,0.1)",
-          padding: "8px 15px",
-          borderRadius: "8px",
-          border: "1px solid rgba(255,255,255,0.2)",
-          zIndex: 1000,
-        }}>
-          <label htmlFor="font-size-selector" style={{ fontSize: "0.85rem", opacity: 0.8, pointerEvents: "none" }}>
-            Font Size:
-          </label>
-          <select
-            id="font-size-selector"
-            value={fontSize}
-            onChange={(e) => setFontSize(Number(e.target.value))}
-            style={{
-              padding: "6px 12px",
-              backgroundColor: "rgba(255,255,255,0.9)",
-              color: colors.ebony,
-              border: "1px solid rgba(255,255,255,0.3)",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              outline: "none",
-              pointerEvents: "auto",
-            }}
-          >
-            <option value="100">Normal (100%)</option>
-            <option value="110">Large (110%)</option>
-            <option value="125">Larger (125%)</option>
-            <option value="150">Largest (150%)</option>
-          </select>
-        </div>
-        {/* END TEMPORARY */}
-
         <div style={{ textAlign: "center", marginBottom: "25px" }}>
           <div
             style={{
               fontSize: "0.85rem",
               letterSpacing: "4px",
-              color: colors.dun,
+              color: colors.sage,
               marginBottom: "8px",
               textTransform: "uppercase",
-              opacity: 0.85,
             }}
           >
-            Viona Homes
+            NAHB Student Competition 2025
           </div>
           <h1
             style={{
@@ -118,10 +68,10 @@ export default function NAHBDashboard() {
               letterSpacing: "1px",
             }}
           >
-            SILVERWOOD HEIGHTS
+            LILBURN RESIDENTIAL DEVELOPMENT
           </h1>
           <p style={{ margin: "8px 0 0", fontSize: "1rem", opacity: 0.8 }}>
-            Premium Residential Development
+            Gwinnett County, Georgia
           </p>
         </div>
 
@@ -134,6 +84,7 @@ export default function NAHBDashboard() {
             { id: "sustainability", label: "Sustainability", icon: "🌿" },
             { id: "financials", label: "Financials", icon: "💰" },
             { id: "estimates", label: "Estimates", icon: "🧮" },
+            { id: "cdmr", label: "CDMR™", icon: "🎯" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -141,33 +92,20 @@ export default function NAHBDashboard() {
               style={{
                 padding: "14px 28px",
                 backgroundColor:
-                  activeTab === tab.id ? colors.bone : "transparent",
+                  activeTab === tab.id ? colors.sage : "transparent",
                 color: activeTab === tab.id ? colors.ebony : colors.bone,
                 border: `2px solid ${
-                  activeTab === tab.id ? colors.dun : "rgba(255,255,255,0.3)"
+                  activeTab === tab.id ? colors.sage : "rgba(255,255,255,0.3)"
                 }`,
                 borderRadius: "8px",
                 cursor: "pointer",
                 fontFamily: "'Georgia', serif",
                 fontSize: "1rem",
-                fontWeight: activeTab === tab.id ? 700 : 600,
+                fontWeight: 600,
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
                 transition: "all 0.3s ease",
-                boxShadow: activeTab === tab.id ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
-              }}
-              onMouseEnter={(e) => {
-                if (activeTab !== tab.id) {
-                  e.target.style.borderColor = colors.dun;
-                  e.target.style.transform = "translateY(-2px)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (activeTab !== tab.id) {
-                  e.target.style.borderColor = "rgba(255,255,255,0.3)";
-                  e.target.style.transform = "translateY(0)";
-                }
               }}
             >
               <span style={{ fontSize: "1.2rem" }}>{tab.icon}</span>
@@ -292,6 +230,25 @@ export default function NAHBDashboard() {
             <Estimates />
           </div>
         )}
+
+        {/* CDMR Tab */}
+        {activeTab === "cdmr" && (
+          <div>
+            <h2
+              style={{
+                color: colors.ebony,
+                marginBottom: "20px",
+                fontSize: "1.8rem",
+                borderBottom: `3px solid ${colors.sage}`,
+                paddingBottom: "10px",
+              }}
+            >
+              CDMR™ Design Framework
+            </h2>
+
+            <CDMR />
+          </div>
+        )}
       </main>
 
       {/* Footer */}
@@ -305,10 +262,10 @@ export default function NAHBDashboard() {
         }}
       >
         <p style={{ margin: 0, fontSize: "0.9rem", opacity: 0.8 }}>
-          Viona Homes | Silverwood Heights
+          NAHB Student Competition 2025 | Lilburn Residential Development
         </p>
         <p style={{ margin: "5px 0 0", fontSize: "0.8rem", opacity: 0.6 }}>
-          Premium Residential Development
+          Gwinnett County, Georgia
         </p>
       </footer>
     </div>
