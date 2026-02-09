@@ -5,6 +5,7 @@ import ProjectManagement from "./project-management";
 import Sustainability from "./sustainability";
 import Financials from "./financials";
 import Estimates from "./estimates";
+import CDMR from "./cdmr";
 
 // Color palette - earthy sage tones
 const colors = {
@@ -19,7 +20,15 @@ export default function NAHBDashboard() {
   const getTabFromURL = () => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
-    const validTabs = ["sales", "demographics", "project", "sustainability", "financials", "estimates"];
+    const validTabs = [
+      "sales",
+      "demographics",
+      "project",
+      "sustainability",
+      "financials",
+      "estimates",
+      "cdmr"
+    ];
     return validTabs.includes(tab) ? tab : "sales";
   };
 
@@ -56,20 +65,25 @@ export default function NAHBDashboard() {
         }}
       >
         {/* TEMPORARY: Font Size Controller (remove this block later) */}
-        <div style={{
-          position: "absolute",
-          top: "15px",
-          right: "20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          backgroundColor: "rgba(255,255,255,0.1)",
-          padding: "8px 15px",
-          borderRadius: "8px",
-          border: "1px solid rgba(255,255,255,0.2)",
-          zIndex: 1000,
-        }}>
-          <label htmlFor="font-size-selector" style={{ fontSize: "0.85rem", opacity: 0.8, pointerEvents: "none" }}>
+        <div
+          style={{
+            position: "absolute",
+            top: "15px",
+            right: "20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            backgroundColor: "rgba(255,255,255,0.1)",
+            padding: "8px 15px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.2)",
+            zIndex: 1000,
+          }}
+        >
+          <label
+            htmlFor="font-size-selector"
+            style={{ fontSize: "0.85rem", opacity: 0.8, pointerEvents: "none" }}
+          >
             Font Size:
           </label>
           <select
@@ -126,7 +140,14 @@ export default function NAHBDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <nav style={{ display: "flex", justifyContent: "center", gap: "15px", flexWrap: "wrap" }}>
+        <nav
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "15px",
+            flexWrap: "wrap",
+          }}
+        >
           {[
             { id: "sales", label: "Sales & Marketing", icon: "📊" },
             { id: "demographics", label: "Demographics", icon: "👥" },
@@ -134,6 +155,7 @@ export default function NAHBDashboard() {
             { id: "sustainability", label: "Sustainability", icon: "🌿" },
             { id: "financials", label: "Financials", icon: "💰" },
             { id: "estimates", label: "Estimates", icon: "🧮" },
+            { id: "cdmr", label: "CDMR™", icon: "🎯" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -155,7 +177,8 @@ export default function NAHBDashboard() {
                 alignItems: "center",
                 gap: "10px",
                 transition: "all 0.3s ease",
-                boxShadow: activeTab === tab.id ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
+                boxShadow:
+                  activeTab === tab.id ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {
@@ -290,6 +313,25 @@ export default function NAHBDashboard() {
             </h2>
 
             <Estimates />
+          </div>
+        )}
+
+        {/* CDMR Tab */}
+        {activeTab === "cdmr" && (
+          <div>
+            <h2
+              style={{
+                color: colors.ebony,
+                marginBottom: "20px",
+                fontSize: "1.8rem",
+                borderBottom: `3px solid ${colors.sage}`,
+                paddingBottom: "10px",
+              }}
+            >
+              CDMR™ Design Framework
+            </h2>
+
+            <CDMR />
           </div>
         )}
       </main>
