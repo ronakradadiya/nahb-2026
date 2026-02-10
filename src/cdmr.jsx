@@ -1,16 +1,4 @@
 import React, { useState, useRef } from "react";
-import {
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-} from "recharts";
 import html2canvas from "html2canvas";
 
 // ============================================
@@ -23,7 +11,6 @@ const colors = {
   light: "#F5F0E8",
   dark: "#1A1A1A",
   success: "#4A7C59",
-  warning: "#C9A227",
   connection: "#E85D75",
   discovery: "#4A90A4",
   movement: "#4A7C59",
@@ -31,83 +18,8 @@ const colors = {
 };
 
 // ============================================
-// CDMR DATA
+// DOWNLOAD BUTTON
 // ============================================
-
-const cdmrPillars = [
-  {
-    name: "Connection",
-    icon: "🤝",
-    color: colors.connection,
-    score: 90,
-    tagline: "Neighbors recognize one another by design",
-    features: [
-      "Front porches & shallow setbacks",
-      "Shared kitchens & cowork lounges",
-      "Central loop circulation",
-      "Clear sightlines & lighting",
-    ],
-  },
-  {
-    name: "Discovery",
-    icon: "🔍",
-    color: colors.discovery,
-    score: 95,
-    tagline: "Dopamine earned, not consumed",
-    features: [
-      "40 acres preserved green space",
-      "Trail narrative sequences",
-      "Edible landscape integration",
-      "Pocket overlooks & pause points",
-    ],
-  },
-  {
-    name: "Movement",
-    icon: "🏃",
-    color: colors.movement,
-    score: 85,
-    tagline: "Everyday motion without pressure",
-    features: [
-      "5-15 min loop trails",
-      "Pickleball along circulation",
-      "Playgrounds on pathways",
-      "Flex spaces in units",
-    ],
-  },
-  {
-    name: "Rest",
-    icon: "😌",
-    color: colors.rest,
-    score: 88,
-    tagline: "Active nervous-system recovery",
-    features: [
-      "High ceilings & clerestories",
-      "Natural material palettes",
-      "Water features & rain gardens",
-      "Quiet zones & sound control",
-    ],
-  },
-];
-
-const radarData = cdmrPillars.map((p) => ({ pillar: p.name, score: p.score }));
-
-const siteData = [
-  { name: "Preserved", value: 40, color: colors.success },
-  { name: "Developed", value: 53, color: colors.primary },
-];
-
-const ediblePlants = [
-  { name: "Mulberry", icon: "🫐", benefit: "Cross-generational" },
-  { name: "Pomegranate", icon: "🍎", benefit: "Mood support" },
-  { name: "Grapes", icon: "🍇", benefit: "Shade & movement" },
-  { name: "Citrus", icon: "🍊", benefit: "Cortisol regulation" },
-  { name: "Strawberries", icon: "🍓", benefit: "Family engagement" },
-];
-
-// ============================================
-// COMPONENTS
-// ============================================
-
 const DownloadButton = ({ sectionRef, filename }) => {
   const [downloading, setDownloading] = useState(false);
   const buttonRef = useRef(null);
@@ -118,7 +30,7 @@ const DownloadButton = ({ sectionRef, filename }) => {
     try {
       if (buttonRef.current) buttonRef.current.style.display = "none";
       const canvas = await html2canvas(sectionRef.current, {
-        backgroundColor: colors.light,
+        backgroundColor: "#fff",
         scale: 2,
         useCORS: true,
       });
@@ -139,15 +51,15 @@ const DownloadButton = ({ sectionRef, filename }) => {
       disabled={downloading}
       style={{
         position: "absolute",
-        top: "10px",
-        right: "15px",
-        padding: "8px 16px",
+        top: "15px",
+        right: "20px",
+        padding: "10px 20px",
         backgroundColor: downloading ? colors.accent : colors.primary,
         color: "#fff",
         border: "none",
-        borderRadius: "6px",
+        borderRadius: "8px",
         cursor: downloading ? "wait" : "pointer",
-        fontSize: "0.8rem",
+        fontSize: "0.85rem",
         fontWeight: 600,
         zIndex: 10,
       }}
@@ -160,7 +72,6 @@ const DownloadButton = ({ sectionRef, filename }) => {
 // ============================================
 // MAIN COMPONENT
 // ============================================
-
 export default function CDMR() {
   const slide1Ref = useRef(null);
   const slide2Ref = useRef(null);
@@ -171,490 +82,561 @@ export default function CDMR() {
         fontFamily: "Georgia, serif",
         backgroundColor: colors.light,
         padding: "30px",
-        minHeight: "100vh",
       }}
     >
-      {/* ==================== SLIDE 1: Framework Overview ==================== */}
+      {/* ==================== SLIDE 1: The Story ==================== */}
       <section
         ref={slide1Ref}
         style={{
-          marginBottom: "40px",
           position: "relative",
-          backgroundColor: colors.light,
-          padding: "10px",
-          borderRadius: "12px",
+          backgroundColor: "#fff",
+          borderRadius: "16px",
+          padding: "40px",
+          marginBottom: "40px",
+          boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+          minHeight: "600px",
         }}
       >
-        <DownloadButton sectionRef={slide1Ref} filename="cdmr-slide-1" />
+        <DownloadButton sectionRef={slide1Ref} filename="cdmr-slide-1-story" />
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+          <div
+            style={{
+              fontSize: "0.8rem",
+              letterSpacing: "3px",
+              color: colors.secondary,
+              marginBottom: "8px",
+            }}
+          >
+            SILVERWOOD HEIGHTS
+          </div>
+          <h1
+            style={{
+              fontSize: "2.2rem",
+              color: colors.dark,
+              margin: 0,
+              fontWeight: 700,
+            }}
+          >
+            A Community Designed Around the{" "}
+            <span style={{ color: colors.primary }}>Human Rhythm</span>
+          </h1>
+        </div>
+
+        {/* Visual Story: Problem → Solution */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            gap: "30px",
+            alignItems: "center",
+            marginBottom: "30px",
+          }}
+        >
+          {/* LEFT: The Challenge */}
+          <div
+            style={{
+              backgroundColor: "#f8f4f0",
+              borderRadius: "20px",
+              padding: "30px",
+              textAlign: "center",
+              border: "2px solid #e0d6cc",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "3rem",
+                marginBottom: "15px",
+                filter: "grayscale(50%)",
+              }}
+            >
+              😔
+            </div>
+            <div
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: colors.dark,
+                marginBottom: "15px",
+              }}
+            >
+              Modern Life
+            </div>
+
+            {/* Visual representation of fragmentation */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "8px",
+                marginBottom: "20px",
+                flexWrap: "wrap",
+              }}
+            >
+              {["😰", "📱", "🏃‍♂️", "😴", "🍔", "💼"].map((emoji, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "45px",
+                    height: "45px",
+                    backgroundColor: "#e8e0d8",
+                    borderRadius: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.3rem",
+                    transform: `rotate(${(i - 2.5) * 8}deg)`,
+                    opacity: 0.7,
+                  }}
+                >
+                  {emoji}
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            >
+              {[
+                "Cognitive Overload",
+                "Isolation",
+                "Lifestyle Fragmentation",
+              ].map((text, i) => (
+                <div
+                  key={i}
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "#888",
+                    padding: "6px 12px",
+                    backgroundColor: "#fff",
+                    borderRadius: "15px",
+                  }}
+                >
+                  {text}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CENTER: Arrow transformation */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <div
+              style={{
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                backgroundColor: colors.primary,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#fff",
+                fontSize: "1.8rem",
+                boxShadow: "0 4px 20px rgba(45, 90, 74, 0.4)",
+              }}
+            >
+              →
+            </div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                color: colors.primary,
+                letterSpacing: "2px",
+                textAlign: "center",
+              }}
+            >
+              CDMR™
+            </div>
+          </div>
+
+          {/* RIGHT: The Solution */}
+          <div
+            style={{
+              backgroundColor: colors.light,
+              borderRadius: "20px",
+              padding: "30px",
+              textAlign: "center",
+              border: `2px solid ${colors.primary}`,
+            }}
+          >
+            <div style={{ fontSize: "3rem", marginBottom: "15px" }}>🏡</div>
+            <div
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: colors.dark,
+                marginBottom: "15px",
+              }}
+            >
+              Silverwood Heights
+            </div>
+
+            {/* 4 Pillars in harmony */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              {[
+                { emoji: "🤝", color: colors.connection },
+                { emoji: "🔍", color: colors.discovery },
+                { emoji: "🏃", color: colors.movement },
+                { emoji: "😌", color: colors.rest },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    backgroundColor: item.color,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.4rem",
+                    boxShadow: `0 3px 10px ${item.color}50`,
+                  }}
+                >
+                  {item.emoji}
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            >
+              {[
+                "Daily Operating System",
+                "Human-Centered Design",
+                "Thriving Communities",
+              ].map((text, i) => (
+                <div
+                  key={i}
+                  style={{
+                    fontSize: "0.8rem",
+                    color: colors.primary,
+                    fontWeight: 600,
+                    padding: "6px 12px",
+                    backgroundColor: "#fff",
+                    borderRadius: "15px",
+                  }}
+                >
+                  {text}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Site Overview Visual */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            gap: "20px",
+            padding: "25px",
+            backgroundColor: colors.primary,
+            borderRadius: "16px",
+            color: "#fff",
+          }}
+        >
+          {[
+            { value: "93", unit: "Acres", label: "Total Site", icon: "🏞️" },
+            {
+              value: "40",
+              unit: "Acres",
+              label: "Preserved Open Space",
+              icon: "🌳",
+            },
+            { value: "43%", unit: "", label: "Conservation", icon: "♻️" },
+            {
+              value: "180",
+              unit: "Homes",
+              label: "Thoughtfully Placed",
+              icon: "🏠",
+            },
+          ].map((stat, idx) => (
+            <div key={idx} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "1.5rem", marginBottom: "5px" }}>
+                {stat.icon}
+              </div>
+              <div style={{ fontSize: "2rem", fontWeight: 700 }}>
+                {stat.value}
+                <span style={{ fontSize: "1rem", opacity: 0.8 }}>
+                  {stat.unit && ` ${stat.unit}`}
+                </span>
+              </div>
+              <div style={{ fontSize: "0.75rem", opacity: 0.85 }}>
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tagline */}
+        <div style={{ textAlign: "center", marginTop: "25px" }}>
+          <p
+            style={{
+              fontSize: "1.1rem",
+              color: colors.secondary,
+              fontStyle: "italic",
+              margin: 0,
+            }}
+          >
+            "Design Backed by Science, Centered on People"
+          </p>
+        </div>
+      </section>
+
+      {/* ==================== SLIDE 2: The Four Pillars ==================== */}
+      <section
+        ref={slide2Ref}
+        style={{
+          position: "relative",
+          backgroundColor: "#fff",
+          borderRadius: "16px",
+          padding: "40px",
+          boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+          minHeight: "600px",
+        }}
+      >
+        <DownloadButton
+          sectionRef={slide2Ref}
+          filename="cdmr-slide-2-pillars"
+        />
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "25px" }}>
           <div
             style={{
               display: "inline-block",
-              padding: "6px 16px",
+              padding: "6px 20px",
               backgroundColor: colors.primary,
               color: "#fff",
               borderRadius: "20px",
               fontSize: "0.75rem",
               letterSpacing: "2px",
-              marginBottom: "10px",
             }}
           >
-            CDMR™ FRAMEWORK
+            THE FOUR PILLARS
           </div>
-          <h1
-            style={{ fontSize: "1.6rem", color: colors.dark, margin: "8px 0" }}
-          >
-            A Community Designed Around the Human Rhythm
-          </h1>
-          <p
-            style={{ fontSize: "0.85rem", color: colors.secondary, margin: 0 }}
-          >
-            93 Acres Total | 40 Acres Preserved | Lilburn, Georgia
-          </p>
         </div>
 
-        {/* 4 Pillars Grid with Features */}
+        {/* 4 Pillars - Visual Cards */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "15px",
-            marginBottom: "20px",
+            gap: "20px",
+            marginBottom: "25px",
           }}
         >
-          {cdmrPillars.map((pillar) => (
+          {[
+            {
+              name: "Connection",
+              icon: "🤝",
+              color: colors.connection,
+              visual: "👨‍👩‍👧‍👦",
+              scene: ["🏠", "💬", "☕", "👋"],
+              benefit: "Oxytocin ↑ Trust ↑",
+            },
+            {
+              name: "Discovery",
+              icon: "🔍",
+              color: colors.discovery,
+              visual: "🌿",
+              scene: ["🥾", "🍇", "🦋", "🌸"],
+              benefit: "Dopamine ↑ Curiosity ↑",
+            },
+            {
+              name: "Movement",
+              icon: "🏃",
+              color: colors.movement,
+              visual: "🚴",
+              scene: ["🏸", "🚶", "🧘", "⛳"],
+              benefit: "Myokines ↑ Energy ↑",
+            },
+            {
+              name: "Rest",
+              icon: "😌",
+              color: colors.rest,
+              visual: "🧘‍♀️",
+              scene: ["💧", "🌙", "📖", "🛋️"],
+              benefit: "Cortisol ↓ Focus ↑",
+            },
+          ].map((pillar, idx) => (
             <div
-              key={pillar.name}
+              key={idx}
               style={{
                 backgroundColor: "#fff",
-                borderRadius: "10px",
-                padding: "15px",
-                borderTop: `4px solid ${pillar.color}`,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                borderRadius: "16px",
+                overflow: "hidden",
+                border: `3px solid ${pillar.color}`,
+                boxShadow: `0 4px 15px ${pillar.color}30`,
               }}
             >
+              {/* Top visual scene */}
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginBottom: "8px",
+                  backgroundColor: `${pillar.color}15`,
+                  padding: "20px",
+                  textAlign: "center",
+                  borderBottom: `2px solid ${pillar.color}30`,
                 }}
               >
+                <div style={{ fontSize: "3rem", marginBottom: "10px" }}>
+                  {pillar.visual}
+                </div>
                 <div
                   style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "50%",
-                    backgroundColor: pillar.color,
                     display: "flex",
-                    alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "1.1rem",
+                    gap: "8px",
                   }}
                 >
-                  {pillar.icon}
+                  {pillar.scene.map((emoji, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        fontSize: "1.3rem",
+                        backgroundColor: "#fff",
+                        borderRadius: "8px",
+                        padding: "5px",
+                      }}
+                    >
+                      {emoji}
+                    </span>
+                  ))}
                 </div>
-                <div>
-                  <div
+              </div>
+
+              {/* Bottom info */}
+              <div style={{ padding: "15px", textAlign: "center" }}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      backgroundColor: pillar.color,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {pillar.icon}
+                  </span>
+                  <span
                     style={{
                       fontWeight: 700,
-                      fontSize: "0.95rem",
+                      fontSize: "1.1rem",
                       color: colors.dark,
                     }}
                   >
                     {pillar.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.7rem",
-                      color: pillar.color,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {pillar.score}%
-                  </div>
+                  </span>
                 </div>
-              </div>
-              <p
-                style={{
-                  margin: "0 0 10px",
-                  fontSize: "0.75rem",
-                  color: colors.secondary,
-                  fontStyle: "italic",
-                }}
-              >
-                "{pillar.tagline}"
-              </p>
-              <div
-                style={{
-                  borderTop: `1px solid ${colors.light}`,
-                  paddingTop: "8px",
-                }}
-              >
-                {pillar.features.map((f, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      fontSize: "0.7rem",
-                      color: colors.dark,
-                      marginBottom: "4px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    <span style={{ color: pillar.color }}>•</span> {f}
-                  </div>
-                ))}
+                <div
+                  style={{
+                    fontSize: "0.7rem",
+                    color: pillar.color,
+                    fontWeight: 600,
+                    backgroundColor: `${pillar.color}15`,
+                    padding: "4px 10px",
+                    borderRadius: "10px",
+                    display: "inline-block",
+                  }}
+                >
+                  {pillar.benefit}
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom Row: Radar + Site Allocation + Value Props */}
+        {/* Daily Rhythm Timeline */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1.5fr",
-            gap: "15px",
-          }}
-        >
-          {/* Radar Chart */}
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "15px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            }}
-          >
-            <h4
-              style={{
-                color: colors.primary,
-                margin: "0 0 8px",
-                fontSize: "0.85rem",
-                textAlign: "center",
-              }}
-            >
-              Integration Score
-            </h4>
-            <ResponsiveContainer width="100%" height={150}>
-              <RadarChart data={radarData}>
-                <PolarGrid stroke={colors.accent} />
-                <PolarAngleAxis
-                  dataKey="pillar"
-                  tick={{ fill: colors.dark, fontSize: 9 }}
-                />
-                <PolarRadiusAxis
-                  angle={30}
-                  domain={[0, 100]}
-                  tick={{ fontSize: 8 }}
-                />
-                <Radar
-                  dataKey="score"
-                  stroke={colors.primary}
-                  fill={colors.primary}
-                  fillOpacity={0.5}
-                  strokeWidth={2}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-            <div style={{ textAlign: "center" }}>
-              <span
-                style={{
-                  backgroundColor: colors.success,
-                  color: "#fff",
-                  padding: "3px 10px",
-                  borderRadius: "10px",
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
-                }}
-              >
-                Avg:{" "}
-                {Math.round(cdmrPillars.reduce((s, p) => s + p.score, 0) / 4)}%
-              </span>
-            </div>
-          </div>
-
-          {/* Site Allocation */}
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "15px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            }}
-          >
-            <h4
-              style={{
-                color: colors.primary,
-                margin: "0 0 8px",
-                fontSize: "0.85rem",
-                textAlign: "center",
-              }}
-            >
-              Site Allocation
-            </h4>
-            <ResponsiveContainer width="100%" height={120}>
-              <PieChart>
-                <Pie
-                  data={siteData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={30}
-                  outerRadius={45}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {siteData.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(v) => `${v} acres`} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "12px",
-                marginTop: "8px",
-              }}
-            >
-              {siteData.map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    fontSize: "0.65rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      backgroundColor: item.color,
-                      borderRadius: "2px",
-                    }}
-                  />
-                  <span>
-                    {item.name}: {item.value}ac
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Value Proposition */}
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "15px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            }}
-          >
-            <h4
-              style={{
-                color: colors.primary,
-                margin: "0 0 10px",
-                fontSize: "0.85rem",
-              }}
-            >
-              CDMR™ Value Proposition
-            </h4>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "8px",
-              }}
-            >
-              {[
-                {
-                  icon: "🎯",
-                  text: "Reduces Friction",
-                  sub: "Spatial strategies",
-                },
-                {
-                  icon: "💚",
-                  text: "Increases Attachment",
-                  sub: "Lived experience",
-                },
-                {
-                  icon: "📈",
-                  text: "Stabilizes Performance",
-                  sub: "Retention & pricing",
-                },
-                {
-                  icon: "🔄",
-                  text: "Repeatable Model",
-                  sub: "Future developments",
-                },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "8px",
-                    backgroundColor: colors.light,
-                    borderRadius: "6px",
-                  }}
-                >
-                  <span style={{ fontSize: "1.1rem" }}>{item.icon}</span>
-                  <div>
-                    <div
-                      style={{
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        color: colors.dark,
-                      }}
-                    >
-                      {item.text}
-                    </div>
-                    <div
-                      style={{ fontSize: "0.6rem", color: colors.secondary }}
-                    >
-                      {item.sub}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== SLIDE 2: Implementation ==================== */}
-      <section
-        ref={slide2Ref}
-        style={{
-          marginBottom: "30px",
-          position: "relative",
-          backgroundColor: colors.light,
-          padding: "10px",
-          borderRadius: "12px",
-        }}
-      >
-        <DownloadButton sectionRef={slide2Ref} filename="cdmr-slide-2" />
-
-        <h2
-          style={{
-            fontSize: "1.2rem",
-            color: colors.dark,
-            marginBottom: "20px",
-            borderLeft: `4px solid ${colors.secondary}`,
-            paddingLeft: "12px",
-            paddingRight: "100px",
-          }}
-        >
-          CDMR™ Implementation: Daily Operating System
-        </h2>
-
-        {/* Daily Rhythm + Edible Landscape */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr",
-            gap: "20px",
+            backgroundColor: colors.light,
+            borderRadius: "16px",
+            padding: "20px 30px",
             marginBottom: "20px",
           }}
         >
-          {/* Daily Operating System */}
+          <div style={{ textAlign: "center", marginBottom: "15px" }}>
+            <span
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: colors.primary,
+                letterSpacing: "1px",
+              }}
+            >
+              A DAY AT SILVERWOOD HEIGHTS
+            </span>
+          </div>
+
           <div
             style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <h4
-              style={{
-                color: colors.primary,
-                margin: "0 0 15px",
-                fontSize: "0.9rem",
-              }}
-            >
-              From Housing to Daily Operating System
-            </h4>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "12px",
-              }}
-            >
-              {[
-                {
-                  time: "Morning",
-                  icon: "🌅",
-                  activities: [
-                    "Trail walk",
-                    "Natural light",
-                    "Community coffee",
-                  ],
-                  pillar: "Movement + Rest",
-                  color: colors.movement,
-                },
-                {
-                  time: "Midday",
-                  icon: "☀️",
-                  activities: [
-                    "Cowork lounge",
-                    "Shaded paths",
-                    "Chance encounters",
-                  ],
-                  pillar: "Connection",
-                  color: colors.connection,
-                },
-                {
-                  time: "Afternoon",
-                  icon: "🌤️",
-                  activities: [
-                    "Playground nodes",
-                    "Edible harvest",
-                    "Pickleball",
-                  ],
-                  pillar: "Discovery",
-                  color: colors.discovery,
-                },
-                {
-                  time: "Evening",
-                  icon: "🌙",
-                  activities: [
-                    "Water features",
-                    "Quiet zones",
-                    "Porch sitting",
-                  ],
-                  pillar: "Rest",
-                  color: colors.rest,
-                },
-              ].map((period, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    textAlign: "center",
-                    padding: "12px 8px",
-                    backgroundColor: colors.light,
-                    borderRadius: "8px",
-                    borderTop: `3px solid ${period.color}`,
-                  }}
-                >
-                  <div style={{ fontSize: "1.4rem", marginBottom: "5px" }}>
+            {[
+              {
+                time: "Morning",
+                icon: "🌅",
+                activities: "🥾 Trail Walk",
+                color: colors.movement,
+              },
+              {
+                time: "Midday",
+                icon: "☀️",
+                activities: "💬 Community",
+                color: colors.connection,
+              },
+              {
+                time: "Afternoon",
+                icon: "🌤️",
+                activities: "🔍 Explore",
+                color: colors.discovery,
+              },
+              {
+                time: "Evening",
+                icon: "🌙",
+                activities: "😌 Restore",
+                color: colors.rest,
+              },
+            ].map((period, idx) => (
+              <React.Fragment key={idx}>
+                <div style={{ textAlign: "center", flex: 1 }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "5px" }}>
                     {period.icon}
                   </div>
                   <div
                     style={{
                       fontWeight: 700,
-                      fontSize: "0.85rem",
+                      fontSize: "0.9rem",
                       color: colors.dark,
                     }}
                   >
@@ -662,162 +644,67 @@ export default function CDMR() {
                   </div>
                   <div
                     style={{
-                      fontSize: "0.6rem",
+                      fontSize: "0.75rem",
                       color: period.color,
                       fontWeight: 600,
-                      marginBottom: "8px",
+                      marginTop: "5px",
                     }}
                   >
-                    {period.pillar}
+                    {period.activities}
                   </div>
-                  {period.activities.map((a, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        fontSize: "0.65rem",
-                        color: colors.dark,
-                        padding: "3px 0",
-                      }}
-                    >
-                      {a}
-                    </div>
-                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Edible Landscape */}
-          <div
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            }}
-          >
-            <h4
-              style={{
-                color: colors.primary,
-                margin: "0 0 12px",
-                fontSize: "0.9rem",
-              }}
-            >
-              🌱 Edible Landscape
-            </h4>
-            <p
-              style={{
-                fontSize: "0.7rem",
-                color: colors.secondary,
-                margin: "0 0 12px",
-              }}
-            >
-              Low-maintenance plants for daily micro-rituals
-            </p>
-            {ediblePlants.map((plant, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "8px",
-                  backgroundColor: idx % 2 === 0 ? colors.light : "#fff",
-                  borderRadius: "6px",
-                  marginBottom: "4px",
-                }}
-              >
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <span style={{ fontSize: "1rem" }}>{plant.icon}</span>
-                  <span
+                {idx < 3 && (
+                  <div
                     style={{
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                      color: colors.dark,
+                      width: "60px",
+                      height: "3px",
+                      background: `linear-gradient(90deg, ${[colors.movement, colors.connection, colors.discovery, colors.rest][idx]}, ${[colors.movement, colors.connection, colors.discovery, colors.rest][idx + 1]})`,
+                      borderRadius: "2px",
                     }}
-                  >
-                    {plant.name}
-                  </span>
-                </div>
-                <span style={{ fontSize: "0.65rem", color: colors.secondary }}>
-                  {plant.benefit}
-                </span>
-              </div>
+                  />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
 
-        {/* Summary Bar */}
+        {/* Footer: Summary + Copyright */}
         <div
           style={{
-            padding: "15px 25px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "15px 20px",
             backgroundColor: colors.primary,
-            borderRadius: "10px",
+            borderRadius: "12px",
             color: "#fff",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "15px",
           }}
         >
-          <div style={{ maxWidth: "65%" }}>
-            <h4 style={{ margin: "0 0 5px", fontSize: "0.95rem" }}>
-              ✅ CDMR™ Completes Traditional Planning
-            </h4>
-            <p style={{ margin: 0, fontSize: "0.75rem", opacity: 0.9 }}>
-              Market feasibility + Human biology + Land stewardship aligned.
-              Delivers <strong>financial performance</strong> and{" "}
-              <strong>human stability</strong>.
-            </p>
-          </div>
-          <div style={{ display: "flex", gap: "15px" }}>
-            {cdmrPillars.map((p, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    width: "35px",
-                    height: "35px",
-                    borderRadius: "50%",
-                    backgroundColor: p.color,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1rem",
-                    margin: "0 auto 4px",
-                  }}
-                >
-                  {p.icon}
-                </div>
-                <div style={{ fontSize: "0.6rem", opacity: 0.9 }}>{p.name}</div>
-              </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+            {["🤝", "🔍", "🏃", "😌"].map((emoji, i) => (
+              <span key={i} style={{ fontSize: "1.3rem" }}>
+                {emoji}
+              </span>
             ))}
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div
-          style={{
-            padding: "12px 20px",
-            backgroundColor: "#fff",
-            borderRadius: "8px",
-            border: `1px solid ${colors.accent}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{ fontSize: "1rem" }}>©</span>
-            <span style={{ fontSize: "0.75rem", color: colors.dark }}>
-              <strong>CDMR™</strong> is the exclusive intellectual property of{" "}
-              <strong>MOR Studio</strong>. All rights reserved.
+            <span style={{ fontSize: "0.85rem", opacity: 0.9 }}>
+              Connection grounds • Discovery inspires • Movement sustains • Rest
+              restores
             </span>
           </div>
-          <span style={{ fontSize: "0.7rem", color: colors.secondary }}>
-            www.morstudio.net
-          </span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              borderLeft: "1px solid rgba(255,255,255,0.3)",
+              paddingLeft: "15px",
+            }}
+          >
+            <span style={{ fontSize: "0.7rem", opacity: 0.8 }}>©</span>
+            <span style={{ fontSize: "0.7rem" }}>
+              <strong>CDMR™</strong> MOR Studio
+            </span>
+          </div>
         </div>
       </section>
     </div>
