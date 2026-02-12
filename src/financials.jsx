@@ -43,49 +43,49 @@ const RAW_DATA = {
   // Project Info
   projectName: "Silverwood Heights",
 
-  // Home Plans - Update values here
+  // Home Plans - Update values here (from Proforma)
   homePlans: [
     {
       name: "The Havenwood",
       units: 36,
       sqft: 2156,
-      basePrice: 484000,
-      buyerBonus: 10500,
+      basePrice: 470000,
+      buyerBonus: 8558,
     },
     {
       name: "The Sterling",
-      units: 37,
+      units: 38,
       sqft: 2212,
-      basePrice: 494000,
-      buyerBonus: 10750,
+      basePrice: 484000,
+      buyerBonus: 8812,
     },
     {
       name: "The Brookside",
       units: 37,
       sqft: 2327,
-      basePrice: 515000,
-      buyerBonus: 11500,
+      basePrice: 499990,
+      buyerBonus: 10196,
     },
     {
       name: "The Kirkwood",
       units: 24,
       sqft: 2696,
-      basePrice: 595000,
-      buyerBonus: 13000,
+      basePrice: 559990,
+      buyerBonus: 10469,
     },
     {
       name: "The Ingram",
-      units: 24,
+      units: 23,
       sqft: 2705,
-      basePrice: 605000,
-      buyerBonus: 13500,
+      basePrice: 564990,
+      buyerBonus: 10287,
     },
     {
       name: "The Riverbend",
       units: 22,
       sqft: 2924,
-      basePrice: 635000,
-      buyerBonus: 14500,
+      basePrice: 599990,
+      buyerBonus: 10924,
     },
   ],
 
@@ -177,78 +177,79 @@ const RAW_DATA = {
     later: "6-7 closings/month",
   },
 
-  // Cost Breakdown (in thousands)
+  // Cost Breakdown (in thousands) - from Proforma/Monthly CFs
   costBreakdown: [
     { category: "Land Acquisition", value: 11035 },
-    { category: "Land Soft Costs", value: 222 },
-    { category: "Horizontal Dev", value: 7181 },
-    { category: "Vertical Construction", value: 46500 },
-    { category: "Arch/Product", value: 795 },
-    { category: "Interest", value: 5556 },
-    { category: "Other (Model, HOA)", value: 3000 },
+    { category: "Site Development", value: 7181 },
+    { category: "Vertical Construction", value: 38263 },
+    { category: "Permits & Soft Costs", value: 3912 },
+    { category: "Interest Carry", value: 5890 },
+    { category: "Variable Costs", value: 13304 },
+    { category: "Other (Arch, Model, HOA)", value: 906 },
   ],
 
-  // Monthly Cash Flow Data (in thousands)
+  // Monthly Cash Flow Data (in thousands) - from Monthly CFs sheet
   monthlyCashFlow: [
-    { month: "May 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Jun 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Jul 26", totalCost: 11878, revenue: 0, closings: 0 },
-    { month: "Aug 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Sep 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Oct 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Nov 26", totalCost: 842, revenue: 0, closings: 0 },
-    { month: "Dec 26", totalCost: 811, revenue: 0, closings: 0 },
-    { month: "Jan 27", totalCost: 811, revenue: 0, closings: 0 },
-    { month: "Feb 27", totalCost: 811, revenue: 0, closings: 0 },
-    { month: "Mar 27", totalCost: 93, revenue: 0, closings: 0 },
-    { month: "Apr 27", totalCost: 93, revenue: 0, closings: 0 },
-    { month: "May 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Jun 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Jul 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Aug 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Sep 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Oct 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Nov 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Dec 27", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Jan 28", totalCost: 902, revenue: 0, closings: 0 },
-    { month: "Feb 28", totalCost: 881, revenue: 0, closings: 0 },
-    { month: "Mar 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Apr 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "May 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Jun 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Jul 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Aug 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Sep 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Oct 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Nov 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Dec 28", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Jan 29", totalCost: 755, revenue: 1585, closings: 3 },
-    { month: "Feb 29", totalCost: 1691, revenue: 1585, closings: 3 },
-    { month: "Mar 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Apr 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "May 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Jun 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Jul 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Aug 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Sep 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Oct 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Nov 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Dec 29", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Jan 30", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Feb 30", totalCost: 1047, revenue: 2642, closings: 5 },
-    { month: "Mar 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Apr 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "May 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Jun 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Jul 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Aug 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Sep 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Oct 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Nov 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Dec 30", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Jan 31", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Feb 31", totalCost: 982, revenue: 3699, closings: 7 },
-    { month: "Mar 31", totalCost: 976, revenue: 0, closings: 0 },
+    { month: "May 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Jun 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Jul 26", totalCost: 11883, revenue: 0, closings: 0 },
+    { month: "Aug 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Sep 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Oct 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Nov 26", totalCost: 847, revenue: 0, closings: 0 },
+    { month: "Dec 26", totalCost: 816, revenue: 0, closings: 0 },
+    { month: "Jan 27", totalCost: 816, revenue: 0, closings: 0 },
+    { month: "Feb 27", totalCost: 816, revenue: 0, closings: 0 },
+    { month: "Mar 27", totalCost: 98, revenue: 0, closings: 0 },
+    { month: "Apr 27", totalCost: 98, revenue: 0, closings: 0 },
+    { month: "May 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Jun 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Jul 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Aug 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Sep 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Oct 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Nov 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Dec 27", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Jan 28", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Feb 28", totalCost: 887, revenue: 0, closings: 0 },
+    { month: "Mar 28", totalCost: 758, revenue: 0, closings: 0 },
+    { month: "Apr 28", totalCost: 758, revenue: 0, closings: 0 },
+    { month: "May 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Jun 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Jul 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Aug 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Sep 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Oct 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Nov 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Dec 28", totalCost: 757, revenue: 1585, closings: 3 },
+    { month: "Jan 29", totalCost: 1048, revenue: 1585, closings: 3 },
+    { month: "Feb 29", totalCost: 1048, revenue: 1585, closings: 3 },
+    { month: "Mar 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Apr 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "May 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Jun 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Jul 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Aug 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Sep 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Oct 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Nov 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Dec 29", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Jan 30", totalCost: 1048, revenue: 2642, closings: 5 },
+    { month: "Feb 30", totalCost: 981, revenue: 2642, closings: 5 },
+    { month: "Mar 30", totalCost: 981, revenue: 2642, closings: 5 },
+    { month: "Apr 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "May 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Jun 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Jul 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Aug 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Sep 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Oct 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Nov 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Dec 30", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Jan 31", totalCost: 981, revenue: 3698, closings: 7 },
+    { month: "Feb 31", totalCost: 111, revenue: 3698, closings: 7 },
+    { month: "Mar 31", totalCost: 98, revenue: 3698, closings: 7 },
+    { month: "Apr 31", totalCost: 98, revenue: 0, closings: 0 },
   ],
 };
 
@@ -1387,22 +1388,24 @@ export default function Financials() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "1fr",
             gap: "20px",
+            marginBottom: "20px",
           }}
         >
           <ChartBox title="Cost Distribution" filename="cost-distribution-pie">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
                   data={costBreakdownData}
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
+                  innerRadius={50}
+                  outerRadius={90}
                   paddingAngle={2}
                   dataKey="value"
                   label={({ category, percent }) =>
-                    `${category}: ${(percent * 100).toFixed(0)}%`
+                    `${category} (${(percent * 100).toFixed(1)}%)`
                   }
                   labelLine={{ stroke: colors.dark, strokeWidth: 1 }}
                 >
@@ -1413,6 +1416,40 @@ export default function Financials() {
                 <Tooltip formatter={(v) => `$${v.toLocaleString()}K`} />
               </PieChart>
             </ResponsiveContainer>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "12px",
+                justifyContent: "center",
+                marginTop: "15px",
+              }}
+            >
+              {costBreakdownData.map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.85rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 14,
+                      height: 14,
+                      backgroundColor: item.color,
+                      borderRadius: "3px",
+                    }}
+                  />
+                  <span style={{ fontWeight: 600 }}>{item.category}:</span>
+                  <span style={{ color: colors.secondary }}>
+                    ${item.value.toLocaleString()}K
+                  </span>
+                </div>
+              ))}
+            </div>
           </ChartBox>
 
           <ChartBox
