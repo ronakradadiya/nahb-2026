@@ -1756,112 +1756,140 @@ export default function Financials() {
           }}
         >
           {/* Left: Risk Cards */}
+          {/* Left: Risk Cards - Clean Version */}
           <ChartBox
             title="Risk Mitigation Effectiveness"
             filename="risk-mitigation-bars"
           >
-            <p
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart
+                data={riskData}
+                layout="vertical"
+                margin={{ left: 100, right: 40, top: 10, bottom: 10 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={colors.accent}
+                  opacity={0.3}
+                  horizontal={true}
+                  vertical={false}
+                />
+                <XAxis
+                  type="number"
+                  domain={[0, 100]}
+                  tickFormatter={(v) => `${v}%`}
+                  tick={{ fill: colors.dark, fontSize: "0.8rem" }}
+                  axisLine={{ stroke: colors.accent }}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  tick={{
+                    fill: colors.dark,
+                    fontSize: "0.85rem",
+                    fontWeight: 500,
+                  }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  formatter={(v) => [`${v}% Mitigated`, "Effectiveness"]}
+                  contentStyle={{
+                    backgroundColor: colors.light,
+                    border: `1px solid ${colors.accent}`,
+                    borderRadius: "8px",
+                  }}
+                />
+                <Bar
+                  dataKey="mitigated"
+                  name="Mitigation"
+                  radius={[0, 6, 6, 0]}
+                  barSize={24}
+                  label={{
+                    position: "right",
+                    formatter: (v) => `${v}%`,
+                    fill: colors.dark,
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  {riskData.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={
+                        entry.mitigated >= 80
+                          ? colors.success
+                          : entry.mitigated >= 70
+                            ? colors.warning
+                            : colors.danger
+                      }
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <div
               style={{
-                fontSize: "0.8rem",
-                color: colors.secondary,
-                marginBottom: "15px",
+                display: "flex",
+                justifyContent: "center",
+                gap: "20px",
+                marginTop: "10px",
               }}
             >
-              Each risk category assessed and mitigated. Green indicates strong
-              mitigation (≥80%), yellow indicates moderate (70-79%).
-            </p>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-            >
-              {riskData.map((risk, idx) => {
-                const barColor =
-                  risk.mitigated >= 80
-                    ? colors.success
-                    : risk.mitigated >= 70
-                      ? colors.warning
-                      : colors.danger;
-                const effectivenessLabel =
-                  risk.mitigated >= 80
-                    ? "Strong"
-                    : risk.mitigated >= 70
-                      ? "Moderate"
-                      : "Low";
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: "10px",
-                      backgroundColor: colors.light,
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      >
-                        <span style={{ fontSize: "1.1rem" }}>{risk.icon}</span>
-                        <span
-                          style={{
-                            fontWeight: 600,
-                            fontSize: "0.85rem",
-                            color: colors.dark,
-                          }}
-                        >
-                          {risk.name}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.65rem",
-                            padding: "2px 6px",
-                            backgroundColor: barColor,
-                            color: "#fff",
-                            borderRadius: "4px",
-                          }}
-                        >
-                          {effectivenessLabel}
-                        </span>
-                      </div>
-                      <span
-                        style={{
-                          fontWeight: 700,
-                          color: barColor,
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        {risk.mitigated}%
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "8px",
-                        backgroundColor: "#ddd",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: `${risk.mitigated}%`,
-                          height: "100%",
-                          backgroundColor: barColor,
-                          borderRadius: "4px",
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: colors.success,
+                    borderRadius: "2px",
+                  }}
+                />
+                <span>Strong (≥80%)</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: colors.warning,
+                    borderRadius: "2px",
+                  }}
+                />
+                <span>Moderate (70-79%)</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: colors.danger,
+                    borderRadius: "2px",
+                  }}
+                />
+                <span>Low (&lt;70%)</span>
+              </div>
             </div>
           </ChartBox>
 
