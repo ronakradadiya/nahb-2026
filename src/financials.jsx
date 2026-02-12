@@ -1894,6 +1894,7 @@ export default function Financials() {
           </ChartBox>
 
           {/* Right: Contingency Budget */}
+          {/* Right: Contingency Budget */}
           <ChartBox
             title="Contingency Budget Allocation"
             filename="contingency-budget-chart"
@@ -1909,49 +1910,60 @@ export default function Financials() {
               (78%) is largest due to site geology—fully budgeted.
             </p>
             <ResponsiveContainer width="100%" height={220}>
-              <BarChart
-                data={contingencyData}
-                layout="vertical"
-                margin={{ left: 80, right: 30 }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke={colors.accent}
-                  opacity={0.5}
-                />
-                <XAxis
-                  type="number"
-                  tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`}
-                  tick={{ fill: colors.dark, fontSize: 10 }}
-                />
-                <YAxis
-                  type="category"
-                  dataKey="category"
-                  tick={{ fill: colors.dark, fontSize: 10 }}
-                />
-                <Tooltip formatter={(v) => `$${v.toLocaleString()}`} />
-                <Bar dataKey="amount" name="Contingency" radius={[0, 4, 4, 0]}>
+              <PieChart>
+                <Pie
+                  data={contingencyData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={45}
+                  outerRadius={80}
+                  paddingAngle={2}
+                  dataKey="amount"
+                  label={({ category, percent }) =>
+                    `${category} (${(percent * 100).toFixed(0)}%)`
+                  }
+                  labelLine={{ stroke: colors.dark, strokeWidth: 1 }}
+                >
                   {contingencyData.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
                   ))}
-                </Bar>
-              </BarChart>
+                </Pie>
+                <Tooltip formatter={(v) => `$${v.toLocaleString()}`} />
+              </PieChart>
             </ResponsiveContainer>
             <div
               style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "12px",
+                justifyContent: "center",
                 marginTop: "10px",
-                padding: "10px",
-                backgroundColor: "#FFF3E0",
-                borderRadius: "6px",
-                borderLeft: `4px solid ${colors.warning}`,
               }}
             >
-              <strong style={{ fontSize: "0.8rem" }}>Key Insight:</strong>
-              <span style={{ fontSize: "0.8rem" }}>
-                {" "}
-                Factor ranges 20-30% applied per category based on site
-                assessment.
-              </span>
+              {contingencyData.map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: item.color,
+                      borderRadius: "2px",
+                    }}
+                  />
+                  <span style={{ fontWeight: 600 }}>{item.category}:</span>
+                  <span style={{ color: colors.secondary }}>
+                    ${(item.amount / 1000).toFixed(0)}K
+                  </span>
+                </div>
+              ))}
             </div>
           </ChartBox>
         </div>
