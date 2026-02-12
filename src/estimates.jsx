@@ -127,6 +127,49 @@ const planEstimates = [
   },
 ];
 
+// Price per SF data for Section 3b
+const pricePerSqftData = [
+  { name: "Havenwood", sqft: 2156, pricePerSqft: 230, avg: 222 },
+  { name: "Sterling", sqft: 2212, pricePerSqft: 220, avg: 222 },
+  { name: "Brookside", sqft: 2327, pricePerSqft: 221, avg: 222 },
+  { name: "Kirkwood", sqft: 2696, pricePerSqft: 221, avg: 222 },
+  { name: "Ingram", sqft: 2705, pricePerSqft: 224, avg: 222 },
+  { name: "Riverbend", sqft: 2924, pricePerSqft: 217, avg: 222 },
+];
+
+// Neighborhood Comparison Data for Section 3c
+const neighborhoodComparisonData = [
+  // Silverwood Heights
+  { neighborhood: "Silverwood", sqft: 2156, pricePerSqft: 230 },
+  { neighborhood: "Silverwood", sqft: 2212, pricePerSqft: 220 },
+  { neighborhood: "Silverwood", sqft: 2327, pricePerSqft: 221 },
+  { neighborhood: "Silverwood", sqft: 2696, pricePerSqft: 221 },
+  { neighborhood: "Silverwood", sqft: 2705, pricePerSqft: 224 },
+  { neighborhood: "Silverwood", sqft: 2924, pricePerSqft: 217 },
+  // Annsbury Park
+  { neighborhood: "Annsbury Park", sqft: 2114, pricePerSqft: 220 },
+  { neighborhood: "Annsbury Park", sqft: 2047, pricePerSqft: 227 },
+  { neighborhood: "Annsbury Park", sqft: 2325, pricePerSqft: 209 },
+  { neighborhood: "Annsbury Park", sqft: 2047, pricePerSqft: 237 },
+  { neighborhood: "Annsbury Park", sqft: 2325, pricePerSqft: 213 },
+  { neighborhood: "Annsbury Park", sqft: 2524, pricePerSqft: 214 },
+  // Chandler Run
+  { neighborhood: "Chandler Run", sqft: 1893, pricePerSqft: 242 },
+  { neighborhood: "Chandler Run", sqft: 2375, pricePerSqft: 199 },
+  { neighborhood: "Chandler Run", sqft: 1984, pricePerSqft: 225 },
+];
+
+// Separate data by neighborhood for line chart
+const silverwoodData = neighborhoodComparisonData
+  .filter((d) => d.neighborhood === "Silverwood")
+  .sort((a, b) => a.sqft - b.sqft);
+const annsburyData = neighborhoodComparisonData
+  .filter((d) => d.neighborhood === "Annsbury Park")
+  .sort((a, b) => a.sqft - b.sqft);
+const chandlerData = neighborhoodComparisonData
+  .filter((d) => d.neighborhood === "Chandler Run")
+  .sort((a, b) => a.sqft - b.sqft);
+
 // Totals
 const totalUnits = planEstimates.reduce((sum, p) => sum + p.units, 0);
 const totalCost = planEstimates.reduce((sum, p) => sum + p.totalCost, 0);
@@ -577,6 +620,7 @@ export default function Estimates() {
   const section2Ref = useRef(null);
   const section3Ref = useRef(null);
   const section3bRef = useRef(null);
+  const section3cRef = useRef(null);
   const section4Ref = useRef(null);
   const section5Ref = useRef(null);
   const summaryRef = useRef(null);
@@ -939,7 +983,6 @@ export default function Estimates() {
       </Section>
 
       {/* Section 3b: Square Footage by Plan */}
-      {/* Section 3b: Square Footage by Plan */}
       <Section
         id="sqft-by-plan"
         title="Square Footage by Plan"
@@ -949,13 +992,13 @@ export default function Estimates() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "3fr 2fr",
             gap: "20px",
           }}
         >
           <ChartBox
-            title="Square Footage Comparison"
-            filename="sqft-comparison"
+            title="Price per Square Foot vs Size"
+            filename="price-per-sqft"
           >
             <p
               style={{
@@ -964,13 +1007,13 @@ export default function Estimates() {
                 marginBottom: "15px",
               }}
             >
-              Home sizes range from 2,156 sqft (Havenwood) to 2,924 sqft
-              (Riverbend).
+              Price per SF ranges from $217 to $230 with an average of $222/SF
+              across all plans.
             </p>
             <ResponsiveContainer width="100%" height={250}>
               <ComposedChart
-                data={planEstimates}
-                margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+                data={pricePerSqftData}
+                margin={{ top: 10, right: 30, left: 30, bottom: 10 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -978,23 +1021,50 @@ export default function Estimates() {
                   opacity={0.5}
                 />
                 <XAxis
-                  dataKey="shortName"
-                  tick={{ fill: colors.dark, fontSize: 11 }}
+                  dataKey="sqft"
+                  tick={{ fill: colors.dark, fontSize: 14 }}
+                  label={{
+                    value: "SF",
+                    position: "insideBottomRight",
+                    offset: -15,
+                    style: { fontSize: 14 },
+                  }}
                 />
                 <YAxis
-                  tickFormatter={(v) => `${v.toLocaleString()}`}
+                  domain={[200, 240]}
+                  tickFormatter={(v) => `$${v}`}
                   tick={{ fill: colors.dark }}
-                  domain={[2000, 3100]}
+                  label={{
+                    value: "$/SF",
+                    angle: -90,
+                    position: "insideLeft",
+                    dx: -15,
+                    style: { textAnchor: "middle" },
+                  }}
                 />
-                <Tooltip formatter={(v) => `${v.toLocaleString()} sqft`} />
+                <Tooltip
+                  formatter={(v, name) =>
+                    name === "avg" ? `$${v}/SF (Avg)` : `$${v}/SF`
+                  }
+                  labelFormatter={(v) => `${v} SF`}
+                />
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="sqft"
-                  name="Square Feet"
+                  dataKey="pricePerSqft"
+                  name="$/SF"
                   stroke={colors.primary}
                   strokeWidth={3}
                   dot={{ r: 6, fill: colors.primary }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="avg"
+                  name="Average ($222/SF)"
+                  stroke={colors.danger}
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
                 />
               </ComposedChart>
             </ResponsiveContainer>
@@ -1045,6 +1115,98 @@ export default function Estimates() {
             </ResponsiveContainer>
           </ChartBox>
         </div>
+      </Section>
+
+      {/* Section 3c: Neighborhood Comparison */}
+      <Section
+        id="neighborhood-comparison"
+        title="Neighborhood Comparison"
+        sectionNumber={"3c"}
+        sectionRef={section3cRef}
+      >
+        <ChartBox
+          title="Price per SF Comparison - Silverwood vs Competitors"
+          filename="neighborhood-comparison"
+        >
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: colors.secondary,
+              marginBottom: "15px",
+            }}
+          >
+            Comparing $/SF across Silverwood Heights, Annsbury Park, and
+            Chandler Run neighborhoods.
+          </p>
+          <ResponsiveContainer width="100%" height={300}>
+            <ComposedChart
+              margin={{ top: 10, right: 30, left: 40, bottom: 10 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke={colors.accent}
+                opacity={0.5}
+              />
+              <XAxis
+                dataKey="sqft"
+                type="number"
+                domain={[1800, 3000]}
+                tick={{ fill: colors.dark, fontSize: 14 }}
+                label={{
+                  value: "SF",
+                  position: "insideBottomRight",
+                  offset: -5,
+                  style: { fontSize: 14 },
+                }}
+                allowDuplicatedCategory={false}
+              />
+              <YAxis
+                domain={[190, 250]}
+                tickFormatter={(v) => `$${v}`}
+                tick={{ fill: colors.dark }}
+                label={{
+                  value: "$/SF",
+                  angle: -90,
+                  position: "insideLeft",
+                  dx: -15,
+                  style: { textAnchor: "middle" },
+                }}
+              />
+              <Tooltip
+                formatter={(v) => `$${v}/SF`}
+                labelFormatter={(v) => `${v} SF`}
+              />
+              <Legend />
+              <Line
+                data={silverwoodData}
+                type="monotone"
+                dataKey="pricePerSqft"
+                name="Silverwood Heights"
+                stroke={colors.primary}
+                strokeWidth={3}
+                dot={{ r: 6, fill: colors.primary }}
+              />
+              <Line
+                data={annsburyData}
+                type="monotone"
+                dataKey="pricePerSqft"
+                name="Annsbury Park"
+                stroke={colors.warning}
+                strokeWidth={3}
+                dot={{ r: 6, fill: colors.warning }}
+              />
+              <Line
+                data={chandlerData}
+                type="monotone"
+                dataKey="pricePerSqft"
+                name="Chandler Run"
+                stroke={colors.danger}
+                strokeWidth={3}
+                dot={{ r: 6, fill: colors.danger }}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </ChartBox>
       </Section>
 
       {/* Section 4: Cost Breakdown by Category */}
