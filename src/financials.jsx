@@ -1066,152 +1066,240 @@ export default function Financials() {
         sectionNumber={3}
         sectionRef={section3Ref}
       >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "20px",
-          }}
+        <ChartBox
+          title="Scenario Comparison"
+          filename="scenario-comparison-chart"
         >
-          <ChartBox
-            title="Scenario Comparison"
-            filename="scenario-comparison-chart"
-          >
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart
-                data={scenarioData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke={colors.accent}
-                  opacity={0.5}
-                />
-                <XAxis dataKey="scenario" tick={{ fill: colors.dark }} />
-                <YAxis
-                  tickFormatter={(v) => `$${v}M`}
-                  tick={{ fill: colors.dark }}
-                />
-                <Tooltip formatter={(v) => `$${v}M`} />
-                <Legend />
-                <Bar
-                  dataKey="revenue"
-                  name="Revenue"
-                  fill={colors.primary}
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="totalCost"
-                  name="Total Cost"
-                  fill={colors.accent}
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="profit"
-                  name="Profit"
-                  fill={colors.success}
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartBox>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              data={scenarioData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke={colors.accent}
+                opacity={0.5}
+              />
+              <XAxis dataKey="scenario" tick={{ fill: colors.dark }} />
+              <YAxis
+                tickFormatter={(v) => `$${v}M`}
+                tick={{ fill: colors.dark }}
+              />
+              <Tooltip formatter={(v) => `$${v}M`} />
+              <Legend />
+              <Bar
+                dataKey="revenue"
+                name="Revenue"
+                fill={colors.primary}
+                radius={[4, 4, 0, 0]}
+              />
+              <Bar
+                dataKey="totalCost"
+                name="Total Cost"
+                fill={colors.accent}
+                radius={[4, 4, 0, 0]}
+              />
+              <Bar
+                dataKey="profit"
+                name="Profit"
+                fill={colors.success}
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartBox>
 
-          <ChartBox filename="scenario-details-table">
-            <h3
-              style={{
-                color: colors.primary,
-                marginBottom: "15px",
-                fontSize: "1.1rem",
-              }}
-            >
-              Scenario Details
-            </h3>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                fontSize: "0.85rem",
-              }}
-            >
-              <thead>
-                <tr style={{ backgroundColor: colors.primary, color: "#fff" }}>
-                  <th style={{ padding: "10px", textAlign: "left" }}>
-                    Scenario
-                  </th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>
-                    Revenue
-                  </th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>
-                    Profit
-                  </th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>ROI</th>
-                  <th style={{ padding: "10px", textAlign: "right" }}>IRR</th>
-                </tr>
-              </thead>
-              <tbody>
-                {scenarioData.map((s, idx) => (
-                  <tr
-                    key={idx}
-                    style={{
-                      backgroundColor:
-                        idx === 1
-                          ? "#E8F5E9"
-                          : idx % 2 === 0
-                            ? "#fff"
-                            : colors.light,
-                    }}
-                  >
-                    <td style={{ padding: "10px", fontWeight: 600 }}>
-                      {s.scenario}
-                    </td>
-                    <td style={{ padding: "10px", textAlign: "right" }}>
-                      ${s.revenue}M
-                    </td>
-                    <td
+        <div style={{ marginTop: "20px" }}>
+          <ChartBox filename="scenario-details-table-full">
+            <div style={{ overflowX: "auto" }}>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "separate",
+                  borderSpacing: "8px",
+                  fontSize: "0.9rem",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th
                       style={{
-                        padding: "10px",
-                        textAlign: "right",
-                        color: colors.success,
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "left",
                         fontWeight: 600,
                       }}
                     >
-                      ${s.profit}M
-                    </td>
-                    <td style={{ padding: "10px", textAlign: "right" }}>
-                      {s.roi}%
-                    </td>
-                    <td style={{ padding: "10px", textAlign: "right" }}>
-                      {s.irr}
-                    </td>
+                      Scenario
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Revenue
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Total Cost
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Profit
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      ROI
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      IRR
+                    </th>
+                    <th
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.dark,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Key Driver
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div
-              style={{
-                marginTop: "15px",
-                fontSize: "0.8rem",
-                color: colors.secondary,
-              }}
-            >
-              <strong>Key Drivers:</strong>
-              <ul
-                style={{
-                  margin: "8px 0 0",
-                  paddingLeft: "20px",
-                  lineHeight: 1.8,
-                }}
-              >
-                <li>
-                  <strong>Best:</strong> {scenarioData[0].driver}
-                </li>
-                <li>
-                  <strong>Baseline:</strong> {scenarioData[1].driver}
-                </li>
-                <li>
-                  <strong>Worst:</strong> {scenarioData[2].driver}
-                </li>
-              </ul>
+                </thead>
+                <tbody>
+                  {scenarioData.map((s, idx) => {
+                    const rowColor =
+                      idx === 0
+                        ? colors.success
+                        : idx === 1
+                          ? colors.primary
+                          : colors.accent;
+                    return (
+                      <tr key={idx}>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: rowColor,
+                            color: "#fff",
+                            borderRadius: "6px",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {s.scenario}
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          ${s.revenue}M
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          ${s.totalCost}M
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          ${s.profit}M
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {s.roi}%
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {s.irr}
+                        </td>
+                        <td
+                          style={{
+                            padding: "14px 20px",
+                            backgroundColor: colors.light,
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {s.driver}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </ChartBox>
         </div>
