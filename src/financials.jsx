@@ -1319,7 +1319,7 @@ export default function Financials() {
           <ResponsiveContainer width="100%" height={350}>
             <ComposedChart
               data={monthlyCashFlowData.filter((_, i) => i % 2 === 0)}
-              margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -1328,7 +1328,7 @@ export default function Financials() {
               />
               <XAxis
                 dataKey="month"
-                tick={{ fill: colors.dark, fontSize: 9 }}
+                tick={{ fill: colors.dark, fontSize: 16 }}
                 angle={-45}
                 textAnchor="end"
                 height={60}
@@ -1338,7 +1338,11 @@ export default function Financials() {
                 tick={{ fill: colors.dark }}
               />
               <Tooltip formatter={(v) => `$${v.toLocaleString()}K`} />
-              <Legend />
+              <Legend
+                wrapperStyle={{
+                  paddingTop: "20px",
+                }}
+              />
               <Bar
                 dataKey="revenue"
                 name="Revenue"

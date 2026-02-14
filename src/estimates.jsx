@@ -387,6 +387,16 @@ const radarData = [
   },
 ];
 
+// Construction Cost per SF data for Section 3c
+const constructionCostData = [
+  { name: "Havenwood", sqft: 2156, costPerSqft: 79.63, avg: 84.06 },
+  { name: "Sterling", sqft: 2212, costPerSqft: 80.85, avg: 84.06 },
+  { name: "Brookside", sqft: 2327, costPerSqft: 81.98, avg: 84.06 },
+  { name: "Kirkwood", sqft: 2696, costPerSqft: 84.03, avg: 84.06 },
+  { name: "Ingram", sqft: 2705, costPerSqft: 88.15, avg: 84.06 },
+  { name: "Riverbend", sqft: 2924, costPerSqft: 89.71, avg: 84.06 },
+];
+
 // ============================================
 // COMPONENTS
 // ============================================
@@ -621,6 +631,7 @@ export default function Estimates() {
   const section3Ref = useRef(null);
   const section3bRef = useRef(null);
   const section3cRef = useRef(null);
+  const section3dRef = useRef(null);
   const section4Ref = useRef(null);
   const section5Ref = useRef(null);
   const summaryRef = useRef(null);
@@ -1207,6 +1218,145 @@ export default function Estimates() {
             </ComposedChart>
           </ResponsiveContainer>
         </ChartBox>
+      </Section>
+
+      {/* Section 3d: Construction Cost by Plan */}
+      <Section
+        id="construction-cost"
+        title="Construction Cost"
+        sectionNumber={"3d"}
+        sectionRef={section3dRef}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "3fr 2fr",
+            gap: "20px",
+          }}
+        >
+          <ChartBox
+            title="Construction Cost per Square Foot vs Size"
+            filename="construction-cost-sqft"
+          >
+            <p
+              style={{
+                fontSize: "0.8rem",
+                color: colors.secondary,
+                marginBottom: "15px",
+              }}
+            >
+              Construction cost per SF ranges from $79.63 to $89.71 with an
+              average of $84.06/SF across all plans.
+            </p>
+            <ResponsiveContainer width="100%" height={250}>
+              <ComposedChart
+                data={constructionCostData}
+                margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={colors.accent}
+                  opacity={0.5}
+                />
+                <XAxis
+                  dataKey="sqft"
+                  tick={{ fill: colors.dark, fontSize: "16px" }}
+                  label={{
+                    value: "SF",
+                    position: "insideBottomRight",
+                    offset: -5,
+                    style: { fontSize: "0.85rem" },
+                  }}
+                />
+                <YAxis
+                  domain={[75, 95]}
+                  tickFormatter={(v) => `$${v}`}
+                  tick={{ fill: colors.dark }}
+                  label={{
+                    value: "$/SF",
+                    angle: -90,
+                    position: "insideLeft",
+                    dx: "-1.5rem",
+                    style: { textAnchor: "middle" },
+                  }}
+                />
+                <Tooltip
+                  formatter={(v, name) =>
+                    name === "avg" ? `$${v}/SF (Avg)` : `$${v}/SF`
+                  }
+                  labelFormatter={(v) => `${v} SF`}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="costPerSqft"
+                  name="$/SF"
+                  stroke={colors.primary}
+                  strokeWidth={3}
+                  dot={{ r: 6, fill: colors.primary }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="avg"
+                  name="Average ($84.06/SF)"
+                  stroke={colors.danger}
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </ChartBox>
+
+          <ChartBox
+            title="Construction Cost Distribution"
+            filename="construction-cost-horizontal"
+          >
+            <p
+              style={{
+                fontSize: "0.8rem",
+                color: colors.secondary,
+                marginBottom: "15px",
+              }}
+            >
+              Larger two-story plans have higher construction cost per SF due to
+              complexity.
+            </p>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart
+                data={constructionCostData}
+                layout="vertical"
+                margin={{ left: 10, right: 30 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke={colors.accent}
+                  opacity={0.5}
+                />
+                <XAxis
+                  type="number"
+                  domain={[75, 95]}
+                  tickFormatter={(v) => `$${v}`}
+                  tick={{ fill: colors.dark }}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  tick={{ fill: colors.dark, fontSize: 11 }}
+                />
+                <Tooltip formatter={(v) => `$${v.toFixed(2)}/SF`} />
+                <Bar dataKey="costPerSqft" name="$/SF" radius={[0, 4, 4, 0]}>
+                  {constructionCostData.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={planEstimates[index]?.color || colors.primary}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartBox>
+        </div>
       </Section>
 
       {/* Section 4: Cost Breakdown by Category */}
