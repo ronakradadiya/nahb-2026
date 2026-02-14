@@ -1337,7 +1337,7 @@ export default function Estimates() {
                   type="number"
                   domain={[75, 95]}
                   tickFormatter={(v) => `$${v}`}
-                  tick={{ fill: colors.dark }}
+                  tick={{ fill: colors.dark, fontSize: 11 }}
                 />
                 <YAxis
                   type="category"
