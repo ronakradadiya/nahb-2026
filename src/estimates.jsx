@@ -397,6 +397,54 @@ const constructionCostData = [
   { name: "Riverbend", sqft: 2924, costPerSqft: 89.71, avg: 84.06 },
 ];
 
+// Cost Breakdown Structure data for Section 3e
+const costBreakdownStructure = [
+  {
+    category: "Foundation",
+    percent: 30,
+    amount: 71537,
+    items: "Concrete Slab on Grade, Footings",
+    color: colors.chart[0],
+  },
+  {
+    category: "Framing",
+    percent: 23,
+    amount: 54845,
+    items: "Structural Framing, Sheathing, Stairs",
+    color: colors.chart[1],
+  },
+  {
+    category: "Exterior Envelope",
+    percent: 16,
+    amount: 38153,
+    items: "Roof, Stucco, Stucco Paint, Insulation, Windows, Exterior Doors",
+    color: colors.chart[2],
+  },
+  {
+    category: "MEP",
+    percent: 18,
+    amount: 42922,
+    items: "Electrical (Rough & Final), Plumbing (Rough & Final), HVAC",
+    color: colors.chart[3],
+  },
+  {
+    category: "Interior Finishes",
+    percent: 9,
+    amount: 21461,
+    items: "Drywall, Interior Paint, Carpet, LVT, Cabinets, Countertops",
+    color: colors.chart[4],
+  },
+  {
+    category: "Specialties",
+    percent: 4,
+    amount: 9538,
+    items: "Toilet Accessories",
+    color: colors.chart[5],
+  },
+];
+
+const totalProjectCost = 238456;
+
 // ============================================
 // COMPONENTS
 // ============================================
@@ -632,6 +680,7 @@ export default function Estimates() {
   const section3bRef = useRef(null);
   const section3cRef = useRef(null);
   const section3dRef = useRef(null);
+  const section3eRef = useRef(null);
   const section4Ref = useRef(null);
   const section5Ref = useRef(null);
   const summaryRef = useRef(null);
@@ -1357,6 +1406,181 @@ export default function Estimates() {
             </ResponsiveContainer>
           </ChartBox>
         </div>
+      </Section>
+
+      {/* Section 3e: Cost Breakdown Structure */}
+      <Section
+        id="cost-breakdown-structure"
+        title="Cost Breakdown Structure"
+        sectionNumber={"3e"}
+        sectionRef={section3eRef}
+      >
+        <ChartBox filename="cost-breakdown-structure-table">
+          <div style={{ overflowX: "auto" }}>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "separate",
+                borderSpacing: "8px",
+                fontSize: "0.9rem",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.dark,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "left",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Category
+                  </th>
+                  <th
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.dark,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "center",
+                      fontWeight: 600,
+                    }}
+                  >
+                    % of Total
+                  </th>
+                  <th
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.dark,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "center",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Total Amount ($)
+                  </th>
+                  <th
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.dark,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "left",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Items Included
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {costBreakdownStructure.map((item, idx) => (
+                  <tr key={idx}>
+                    <td
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: item.color,
+                        color: "#fff",
+                        borderRadius: "6px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {item.category}
+                    </td>
+                    <td
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.light,
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {item.percent}%
+                    </td>
+                    <td
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.light,
+                        borderRadius: "6px",
+                        textAlign: "center",
+                        fontWeight: 500,
+                      }}
+                    >
+                      ${item.amount.toLocaleString()}
+                    </td>
+                    <td
+                      style={{
+                        padding: "14px 20px",
+                        backgroundColor: colors.light,
+                        borderRadius: "6px",
+                        textAlign: "left",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {item.items}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.secondary,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    TOTAL PROJECT
+                  </td>
+                  <td
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.secondary,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "center",
+                      fontWeight: 700,
+                    }}
+                  >
+                    100%
+                  </td>
+                  <td
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.secondary,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "center",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ${totalProjectCost.toLocaleString()}
+                  </td>
+                  <td
+                    style={{
+                      padding: "14px 20px",
+                      backgroundColor: colors.secondary,
+                      color: "#fff",
+                      borderRadius: "6px",
+                      textAlign: "left",
+                      fontWeight: 700,
+                    }}
+                  >
+                    —
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </ChartBox>
       </Section>
 
       {/* Section 4: Cost Breakdown by Category */}
